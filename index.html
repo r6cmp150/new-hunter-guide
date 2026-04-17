@@ -2022,38 +2022,6 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
       <div id="filterDrawerGroups" style="display:flex;flex-direction:column;gap:12px"></div>
 
       <!-- Difficulty -->
-      <div style="background:#f8f3e5;border-radius:12px;padding:16px;border-left:6px solid #172c1d;margin-top:12px">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-          <span style="font-size:16px">📊</span>
-          <p style="font-family:'Newsreader',Georgia,serif;font-size:16px;font-weight:700;color:#172c1d;text-transform:uppercase;letter-spacing:.5px">Difficulty Level</p>
-        </div>
-        <div style="display:flex;flex-wrap:wrap;gap:16px">
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" id="fd-Beginner" checked onchange="applyDiffFilter()" style="display:none" class="diff-peer">
-            <div id="fd-box-Beginner" style="width:20px;height:20px;border-radius:4px;border:2px solid #c3c8c1;background:transparent;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0" onclick="toggleDiffBox('Beginner')"></div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="width:10px;height:10px;border-radius:50%;background:#4CAF50;display:inline-block"></span>
-              <span style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;color:#172c1d">Beginner</span>
-            </div>
-          </label>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" id="fd-Intermediate" checked onchange="applyDiffFilter()" style="display:none">
-            <div id="fd-box-Intermediate" style="width:20px;height:20px;border-radius:4px;border:2px solid #c3c8c1;background:transparent;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0" onclick="toggleDiffBox('Intermediate')"></div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="width:10px;height:10px;border-radius:50%;background:#FFB300;display:inline-block"></span>
-              <span style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;color:#172c1d">Intermediate</span>
-            </div>
-          </label>
-          <label style="display:flex;align-items:center;gap:8px;cursor:pointer">
-            <input type="checkbox" id="fd-Advanced" checked onchange="applyDiffFilter()" style="display:none">
-            <div id="fd-box-Advanced" style="width:20px;height:20px;border-radius:4px;border:2px solid #c3c8c1;background:transparent;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0" onclick="toggleDiffBox('Advanced')"></div>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span style="width:10px;height:10px;border-radius:50%;background:#F4511E;display:inline-block"></span>
-              <span style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;color:#172c1d">Advanced</span>
-            </div>
-          </label>
-        </div>
-      </div>
     </div>
 
     <!-- Apply button -->
@@ -3396,7 +3364,7 @@ const FILTER_GROUPS = [
 const SPOT_ANIMAL_TYPES = [...new Set(SPOTS.map(s=>s.deer))];
 const FILTER_IDS = FILTER_GROUPS.flatMap(g=>g.ids).filter(id=>SPOT_ANIMAL_TYPES.includes(id));
 let activeFilters = new Set(['black-tail','mule-deer','whitetail']);
-let activeDiffs = new Set(['Beginner','Intermediate','Advanced']);
+const activeDiffs = new Set(['Beginner','Intermediate','Advanced']); // difficulty filter removed
 let filterTarget = 'browse';
 
 const GROUP_COLORS = {
@@ -3652,7 +3620,7 @@ function requestGPS(){
   );
 }
 function showGPSErr(msg){document.getElementById('gpsLoading').style.display='none';document.getElementById('gpsSuccess').style.display='none';document.getElementById('gpsError').style.display='flex';document.getElementById('gpsErrorMsg').textContent=msg;}
-function getFilteredSpots(){return SPOTS.filter(s=>activeFilters.has(s.deer)&&activeDiffs.has(s.difficulty));}
+function getFilteredSpots(){return SPOTS.filter(s=>activeFilters.has(s.deer));}
 
 // ── LEAFLET MAP ENGINE ─────────────────────────────────────────────────────
 let nearMap=null, browseMap=null;
@@ -3926,9 +3894,9 @@ function filterPreset(preset){
   });
   // Handle difficulty for beginner preset
   if(preset==='beginner'){
-    activeDiffs=new Set(['Beginner']);
+    // difficulty filter removed
   } else if(preset==='none'){
-    activeDiffs=new Set();
+    // difficulty filter removed
   } else {
     activeDiffs=new Set(['Beginner','Intermediate','Advanced']);
   }
