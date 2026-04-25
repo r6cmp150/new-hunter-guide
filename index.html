@@ -1608,6 +1608,9 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
   #screen-pack [style*="grid-template-columns:1fr 1fr 1fr 1fr"] { grid-template-columns:1fr 1fr !important }
   #screen-pack [style*="display:grid"] { max-width:100% !important }
   #screen-pack img { max-width:100% !important; height:auto !important }
+  /* Tab buttons wrap on mobile */
+  #screen-pack .pack-tabs { flex-wrap:wrap !important; gap:6px !important }
+  #screen-pack #ptab-weapon { font-size:11px !important; padding:8px 12px !important }
   /* Know Your Prey mobile strengthening */
   #screen-animals main { padding:20px 14px 60px !important; max-width:100vw !important; box-sizing:border-box !important }
   #screen-animals h1 { font-size:36px !important; line-height:1 !important; letter-spacing:-1px !important }
@@ -1671,10 +1674,11 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
           <p style="font-size:16px;color:#434843;line-height:1.7;max-width:520px">Leaving in the morning, back by dark. Typically 6–10 miles of hiking. Gear assumes <strong style="text-decoration:underline;text-decoration-color:rgba(245,102,0,.35)">WA fall weather</strong>: cold mornings, possible rain.</p>
         </div>
         <!-- Tab bar -->
-        <div style="display:inline-flex;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;align-self:flex-start">
+        <div class="pack-tabs" style="display:inline-flex;flex-wrap:wrap;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;align-self:flex-start">
           <button id="ptab-day" onclick="setPackTab('day')" style="padding:10px 22px;border-radius:8px;background:#061b0e;color:#fff;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(6,27,14,.25);transition:all .15s">Day Hunt</button>
           <button id="ptab-multi" onclick="setPackTab('multi')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">Multi-Day</button>
           <button id="ptab-firstaid" onclick="setPackTab('firstaid')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">First Aid Kit</button>
+          <button id="ptab-weapon" onclick="setPackTab('weapon')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">Prepare Your Weapon</button>
         </div>
       </div>
       <!-- Hero image -->
@@ -2020,6 +2024,354 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
       </div>
 
     </div><!-- end pack-firstaid -->
+
+    <!-- ── PREPARE YOUR WEAPON TAB ── -->
+    <div id="pack-weapon" style="display:none;padding:0 0 40px">
+
+      <!-- CLEANING: RIFLE -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e7e2d4;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span style="font-size:22px">🔧</span>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-size:20px;font-weight:700;color:#172c1d">Cleaning Your Rifle</h4>
+        </div>
+        <img src="./images/cleaning_rifle.png" alt="Cleaning a rifle" style="width:100%;border-radius:10px;margin-bottom:16px;object-fit:cover;max-height:320px">
+        <p style="font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.7;margin-bottom:16px">Clean your rifle after every use and before each hunting season. Carbon, copper fouling, and moisture cause accuracy loss and corrosion. This takes 20–30 minutes.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:6px">What You Need</p>
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.7">Cleaning rod with bore brush and patch holder • Cotton patches • Bore solvent (Hoppe's No. 9 or similar) • Gun oil or CLP • Chamber brush • Toothbrush • Clean rags • Muzzle guard (optional but recommended)</p>
+          </div>
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:8px">Step-by-Step</p>
+            <ol style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.9;padding-left:18px;margin:0">
+              <li><strong style="color:#172c1d">Make safe.</strong> Remove magazine, open the bolt, visually and physically confirm the chamber is empty. Always.</li>
+              <li><strong style="color:#172c1d">Remove the bolt.</strong> Most bolt-action rifles have a release button. Set the bolt aside on a clean rag.</li>
+              <li><strong style="color:#172c1d">Apply solvent to bore brush.</strong> Run the solvent-soaked bore brush through the barrel from breech to muzzle 8–10 times. Never reverse direction mid-stroke — always complete the full stroke before reversing.</li>
+              <li><strong style="color:#172c1d">Let it soak.</strong> Wait 5–10 minutes for the solvent to loosen carbon and copper fouling.</li>
+              <li><strong style="color:#172c1d">Run patches.</strong> Switch to the patch holder. Run solvent-soaked patches through the barrel until they come out clean. This typically takes 5–10 patches. Each patch goes one direction only — muzzle to breech or breech to muzzle, then discard.</li>
+              <li><strong style="color:#172c1d">Dry patch.</strong> Run a dry patch through to remove all solvent. The barrel should look bright and clean when you look through it toward a light source.</li>
+              <li><strong style="color:#172c1d">Oil patch.</strong> Run one lightly oiled patch through the barrel to leave a thin protective film. Do not over-oil — excess oil in the chamber can cause misfires.</li>
+              <li><strong style="color:#172c1d">Clean the bolt.</strong> Use a toothbrush and solvent to scrub the bolt face, extractor, and firing pin area. Wipe dry, then apply a light drop of oil to the bolt body. Do not oil the firing pin channel.</li>
+              <li><strong style="color:#172c1d">Clean the action.</strong> Use a brush to remove loose debris from the receiver. Wipe with a clean rag. Apply a very light coat of oil to metal surfaces.</li>
+              <li><strong style="color:#172c1d">Clean the chamber.</strong> Use the chamber brush with solvent. The chamber must be clean and dry — any oil or debris here affects accuracy and can cause failures to extract.</li>
+              <li><strong style="color:#172c1d">Wipe down the exterior.</strong> Wipe all metal surfaces with a lightly oiled rag to prevent rust. Pay attention to the barrel, scope rings, and any exposed steel on the stock.</li>
+              <li><strong style="color:#172c1d">Function check.</strong> Reinstall the bolt. Dry-fire (safely, with snap caps if you have them) to confirm everything works smoothly before storage.</li>
+            </ol>
+          </div>
+          <div style="background:#fef3ee;border:1px solid #f5bb89;border-radius:8px;padding:12px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#434843;line-height:1.6"><strong style="color:#e07840">Pro tip:</strong> Before the season, run a dry patch through the barrel after cleaning. Some hunters leave a light oil coat in storage but prefer a dry barrel for hunting — oil on the bullet can slightly affect the first shot's point of impact.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- CLEANING: SHOTGUN -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e7e2d4;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span style="font-size:22px">🔫</span>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-size:20px;font-weight:700;color:#172c1d">Cleaning Your Shotgun</h4>
+        </div>
+        <img src="./images/cleaning_shotgun.png" alt="Cleaning a shotgun" style="width:100%;border-radius:10px;margin-bottom:16px;object-fit:cover;max-height:320px">
+        <p style="font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.7;margin-bottom:16px">Shotguns take more fouling than rifles due to plastic wad residue. Clean after every use — especially when using steel shot which is harder on the bore than lead.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:6px">What You Need</p>
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.7">Shotgun bore brush (12 or 20 gauge) • Bore mop • Cotton patches • Solvent • CLP or gun oil • Choke tube wrench and brush • Toothbrush • Clean rags</p>
+          </div>
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:8px">Step-by-Step</p>
+            <ol style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.9;padding-left:18px;margin:0">
+              <li><strong style="color:#172c1d">Make safe.</strong> Open the action, remove all shells, confirm empty visually and physically.</li>
+              <li><strong style="color:#172c1d">Remove the barrel.</strong> Most pump and semi-auto shotguns have easily removable barrels. This makes cleaning much easier.</li>
+              <li><strong style="color:#172c1d">Remove the choke tube.</strong> Use the choke tube wrench to unscrew the choke. Soak it in solvent separately — plastic wad fouling builds up heavily in the choke.</li>
+              <li><strong style="color:#172c1d">Scrub the bore.</strong> Run the bore brush soaked in solvent through the barrel 8–10 times to loosen wad fouling and powder residue.</li>
+              <li><strong style="color:#172c1d">Use the bore mop.</strong> After brushing, run the bore mop soaked in solvent through the barrel — the mop's larger contact area cleans shotgun bores more effectively than patches alone.</li>
+              <li><strong style="color:#172c1d">Patch until clean.</strong> Run patches through until they come out clean and white.</li>
+              <li><strong style="color:#172c1d">Clean the choke tube.</strong> Scrub the choke with the choke brush and solvent. Remove all plastic wad fouling — a dirty choke affects pattern consistency. Dry thoroughly and apply a thin coat of anti-seize compound before reinstalling.</li>
+              <li><strong style="color:#172c1d">Oil the bore.</strong> Run one lightly oiled patch through the barrel.</li>
+              <li><strong style="color:#172c1d">Clean the action.</strong> For pump guns: brush the receiver and action bars. For semi-autos: clean the gas ports and piston assembly (critical for reliable cycling). Consult your owner's manual for semi-auto specifics.</li>
+              <li><strong style="color:#172c1d">Wipe exterior.</strong> Wipe all metal surfaces with a lightly oiled rag. Reassemble.</li>
+            </ol>
+          </div>
+          <div style="background:#fef3ee;border:1px solid #f5bb89;border-radius:8px;padding:12px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#434843;line-height:1.6"><strong style="color:#e07840">Steel shot warning:</strong> Steel shot is harder on bores than lead. Always verify your shotgun and choke are rated for steel shot before using it. Never use a Full choke with steel shot — use Modified or more open only. This is especially important for waterfowl hunting where non-toxic shot is federally required.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCOPE: ATTACH & SIGHT IN -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e7e2d4;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
+          <span style="font-size:22px">🎯</span>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-size:20px;font-weight:700;color:#172c1d">Mounting & Sighting In Your Scope</h4>
+        </div>
+        <p style="font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.7;margin-bottom:16px">A scope that isn't sighted in is worse than no scope — you'll miss cleanly or worse, wound an animal. Do this at least 4–6 weeks before the season so you have time to correct problems.</p>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:8px">Part 1 — Mounting a Scope</p>
+            <ol style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.9;padding-left:18px;margin:0">
+              <li><strong style="color:#172c1d">Choose the right rings and base.</strong> Match the ring height to your barrel diameter and objective lens size — rings must be tall enough that the scope doesn't touch the barrel. Match the base to your rifle's receiver (Picatinny, Weaver, or proprietary).</li>
+              <li><strong style="color:#172c1d">Install the base.</strong> Clean the receiver top with solvent. Apply blue Loctite to the base screws and torque to spec (typically 15–25 in-lbs). Blue Loctite holds under recoil but can be removed — never use red Loctite on scope mounts.</li>
+              <li><strong style="color:#172c1d">Set the rings.</strong> Place the bottom halves of the rings on the base. Set the scope in the rings before tightening.</li>
+              <li><strong style="color:#172c1d">Set eye relief.</strong> Shoulder the rifle naturally with your eyes closed, then open them. The scope should give you a full, clear picture with no black ring around the edge. Slide the scope forward or back until the image is perfect. This prevents "scope bite" — the scope hitting your eyebrow under recoil.</li>
+              <li><strong style="color:#172c1d">Level the scope.</strong> Use a scope leveling kit or a small bubble level. A canted scope causes your shots to drift sideways as range increases.</li>
+              <li><strong style="color:#172c1d">Torque the ring caps.</strong> Tighten ring cap screws in an alternating cross pattern — do not fully tighten one side before the other. Torque to 15–18 in-lbs. Apply blue Loctite to ring screws.</li>
+              <li><strong style="color:#172c1d">Function check.</strong> Cycle the action several times to confirm nothing interferes. The turrets must be accessible and the scope must not shift during cycling.</li>
+            </ol>
+          </div>
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:8px">Part 2 — Bore Sighting (Before the Range)</p>
+            <ol style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.9;padding-left:18px;margin:0">
+              <li>Remove the bolt. Look through the barrel from the breech end and center a target at 25 yards in the bore.</li>
+              <li>Without moving the rifle, adjust your scope's windage and elevation turrets until the crosshairs also center on the same target.</li>
+              <li>This gets you close enough to hit paper at 25 yards — then you fine-tune at the range. Bore sighting saves ammunition.</li>
+            </ol>
+          </div>
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#172c1d;margin-bottom:8px">Part 3 — Sighting In at the Range</p>
+            <ol style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.9;padding-left:18px;margin:0">
+              <li><strong style="color:#172c1d">Start at 25 yards.</strong> Fire 3 shots from a solid rest (sandbags or a bench rest). Mark where the group hits. Most hunters use a 100-yard zero — starting at 25 yards gets you on paper quickly.</li>
+              <li><strong style="color:#172c1d">Adjust turrets.</strong> Most scopes have ¼ MOA clicks (about ¼ inch per click at 100 yards, or about 1/16 inch at 25 yards). Count how far off your group is in inches and adjust accordingly. "Up" moves the point of impact up; "Right" moves it right.</li>
+              <li><strong style="color:#172c1d">Move to 100 yards.</strong> Once hitting paper consistently at 25 yards, move to 100 yards.</li>
+              <li><strong style="color:#172c1d">Fire a 3-shot group.</strong> Aim at the same point each time. Let the barrel cool between groups — a hot barrel shoots differently than a cold one.</li>
+              <li><strong style="color:#172c1d">Zero at 100 yards.</strong> For most WA hunting (deer, elk at typical distances under 300 yards), zero 1.5–2 inches high at 100 yards. This puts you roughly on at 200 yards and about 4–6 inches low at 300 yards — no holdover needed for most shots.</li>
+              <li><strong style="color:#172c1d">Confirm zero.</strong> Fire a final 3-shot group at 100 yards to confirm. A tight 3-shot group within 1 inch at 100 yards means your rifle is ready.</li>
+              <li><strong style="color:#172c1d">Check zero after transport.</strong> Always fire 1–2 confirmation shots at the start of a hunt if your rifle has traveled by vehicle or been handled extensively — scopes can shift.</li>
+            </ol>
+          </div>
+          <div style="background:#fef3ee;border:1px solid #f5bb89;border-radius:8px;padding:12px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#434843;line-height:1.6"><strong style="color:#e07840">First-timer tip:</strong> Bring a friend or ask a range officer for help your first time. Most experienced shooters and range staff are happy to help new hunters sight in — don't be afraid to ask. A 20-minute lesson at the range is worth more than any video.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PAID SHOOTING RANGES -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e7e2d4;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <span style="font-size:22px">💵</span>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-size:20px;font-weight:700;color:#172c1d">Paid Shooting Ranges — Washington State</h4>
+        </div>
+        <p style="font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.6;margin-bottom:16px">All ranges below allow both rifles and shotguns. Always call ahead to confirm current hours, fees, and any lane requirements before visiting.</p>
+        <div style="display:flex;flex-direction:column;gap:12px">
+
+          <!-- WESTERN WA -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Western Washington</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">1. Renton Fish &amp; Game Club — Renton</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Indoor and outdoor ranges. 25, 50, and 100-yard outdoor rifle range. Reasonable day fees. Located at 18225 SE Lake Youngs Rd, Renton. rentonfishgame.com</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">2. West Coast Armory — Bellevue &amp; Everett</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Indoor pistol and rifle lanes up to 50 yards. Good for basic zeroing before heading to a longer outdoor range. westcoastarmory.com</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">3. Bellevue Gun Club — Redmond</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Established club with outdoor rifle range to 200 yards. Trap and skeet for shotgun. Day use available. 10400 NE 60th St, Kirkland area. bellevuegunclub.com</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">4. Tacoma Sportsmen's Club — Tacoma</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">100 and 200-yard rifle ranges plus trap/skeet fields. Guest day use available. 13505 Orville Rd E, Tacoma. tacomasportsmen.org</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">5. Kitsap Rifle and Revolver Club — Bremerton</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with rifle bays to 300 yards and a 500-yard long range. Guest shooting available. Located on Seabeck-Holly Rd NW, Bremerton. krrc.org</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">6. Olympia Rifle and Pistol Club — Olympia</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor rifle ranges to 200 yards plus trap fields. Club membership or guest day use. Near Millersylvania State Park south of Olympia. orpc.net</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">7. Skagit Valley Shooting Range — Burlington</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with rifle lanes and shotgun fields serving Skagit County. Convenient for hunters in the Mount Vernon/Burlington area.</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">8. Whatcom County Sportsmen's Association — Bellingham</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor rifle range and shotgun fields serving Whatcom County. Rifle range to 200 yards. wcsa-ranges.com</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTRAL WA -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Central Washington</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">9. Yakima Sportsman State Park — Yakima</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW-managed public range. 25, 50, 100, and 200-yard rifle ranges. Small day fee. One of the most accessible public ranges in central WA. 904 Keys Rd, Selah. wdfw.wa.gov</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">10. Kittitas County Sportsmen Association — Ellensburg</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor rifle range to 200 yards plus skeet field. Day use available to non-members. Good base for hunters sighting in before hunting the L.T. Murray Wildlife Area.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">11. Wenatchee Valley Rifle Club — East Wenatchee</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with rifle bays to 200 yards. Good option for hunters targeting Wenatchee National Forest deer and elk. wvrc.org</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">12. Chelan County Public Shooting Range — Wenatchee area</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">County-operated range with covered benches and rifle lanes to 100 yards. Minimal fee. Good beginner option with structure and safety oversight.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EASTERN WA -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Eastern Washington</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">13. Spokane Gun Club — Spokane</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">One of the oldest clubs in WA. Outdoor rifle range to 200 yards plus extensive trap/skeet facilities. Day use and membership options. spokanegunclub.com</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">14. Ponderosa Sporting Clays — Nine Mile Falls (Spokane area)</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Shotgun-focused sporting clays course — excellent for practice before pheasant and grouse season. Very good simulation of real hunting scenarios. ponderosasportingclays.com</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">15. Palouse Empire Sportsmen's Association — Pullman</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with rifle lanes and shotgun fields in the Palouse. Good for hunters targeting SE Washington pheasant and whitetail. pesamb.org</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">16. Okanogan County Rifle Range — Okanogan</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">County-operated range in north-central WA. Rifle lanes to 200 yards. Minimal day fee. Ideal for hunters heading into the Okanogan National Forest.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">17. Ferry County Rod &amp; Gun Club — Republic</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Rural club in NE Washington with outdoor rifle range. Good base for hunters targeting the Colville National Forest. Republic area.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">18. Tri-Cities Shooting Association — Kennewick</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with rifle lanes, pistol bays, and shotgun fields. Serves the Tri-Cities area. Day use available. Good option before hunting the Columbia Basin.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">19. Moses Lake Sportsmen Association — Moses Lake</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Grant County club with rifle and shotgun facilities. Serves hunters in the Columbia Basin area. mlsaclub.com</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">20. Walla Walla County Rifle Range — Walla Walla</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Outdoor range with benched rifle lanes. Day use available. Serves SE Washington hunters targeting the Blue Mountains and agricultural pheasant country.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FREE SHOOTING LOCATIONS -->
+      <div style="background:#fff;border-radius:12px;padding:24px;border:1px solid #e7e2d4;margin-bottom:20px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px">
+          <span style="font-size:22px">🌲</span>
+          <h4 style="font-family:'Newsreader',Georgia,serif;font-size:20px;font-weight:700;color:#172c1d">Free Shooting Locations — Washington State</h4>
+        </div>
+        <p style="font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.6;margin-bottom:6px">Washington allows recreational target shooting on most DNR, National Forest, and BLM public land where it is safe and legal. You must be at least 150 feet from any road, building, or water. You are responsible for your backstop — always shoot into a solid earthen berm. Pack out all targets and brass.</p>
+        <div style="background:#fef3ee;border:1px solid #f5bb89;border-radius:8px;padding:12px;margin-bottom:16px">
+          <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#434843;line-height:1.6"><strong style="color:#e07840">Rules for all free locations:</strong> Never shoot across roads or trails. Ensure a solid earthen backstop behind your target. Clean up all targets, brass, and debris when done. Check for any local fire restrictions before shooting during dry summer months. Shooting is prohibited within 150 feet of any occupied structure, road, or water.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:12px">
+
+          <!-- WESTERN WA FREE -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Western Washington — Free</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">1. Capitol State Forest — Thurston/Grays Harbor County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">The most popular free shooting area near Olympia. Thousands of acres of DNR land with established gravel pit areas used regularly for target shooting. Take Hwy 8 west of Olympia, then south on DNR roads into the forest. Use the C-Line or D-Line road areas. No fee, no permit required. Pack out targets and brass.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">2. Snoqualmie State Forest — King/Pierce County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">DNR land east of Auburn and Enumclaw with gravel pits and clearcut areas suitable for target shooting. Take SR-410 east of Buckley into DNR road areas. Large earthen berms in old gravel extraction areas are ideal backstops.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">3. Tahoma State Forest — Lewis County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">DNR land near Elbe with logging road access and gravel pit areas. Take SR-706 east of Eatonville into DNR Road 1 area. Popular with hunters preparing for the Lewis County deer season. Discover Pass required for vehicle access.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">4. Olympic National Forest — Mason/Clallam County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">USFS land on the Olympic Peninsula allows recreational shooting. Use the Hamma Hamma or Skokomish River road corridors. Find a gravel road pullout with a solid hillside backstop. No fee on National Forest land.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">5. Willapa Hills State Forest — Pacific County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">DNR land in Pacific County with established gravel pit areas and clearcut zones. Take US-101 north of Raymond into the DNR forest road network. Good backstops in old logging cut areas.</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">6. Mount Baker-Snoqualmie National Forest — Whatcom/Skagit County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">USFS land along the SR-20 corridor near Concrete and Rockport. Find a gravel road pullout away from campgrounds with a solid hillside backstop. No fee. Good option for hunters from the Bellingham and Burlington areas.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- CENTRAL WA FREE -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Central Washington — Free</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">7. L.T. Murray Wildlife Area — Kittitas County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW Wildlife Area with open shrub-steppe terrain. Find a road cut or draw with a solid earthen hillside backstop on Green Dot roads north of Ellensburg off Reecer Creek Rd. Free with Green Dot permit (free from WDFW).</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">8. Wenatchee National Forest — Chelan County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">USFS land off US-2 east of Leavenworth. Take any forest road into the hills and find a gravel bank or hillside backstop. No fee. Popular with hunters from Wenatchee and the Cascade foothills.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">9. Colockum Wildlife Area — Kittitas County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW land north of Ellensburg with open terrain and road cuts providing natural backstops. Access via Vantage Hwy north from Ellensburg. Green Dot permit required.</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">10. Naches Ranger District — Yakima County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">USFS land off US-12 west of Yakima. Take forest roads off the Naches-Tieton Rd into the hills. Multiple hillside areas with solid earthen backstops. No fee on National Forest land.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- EASTERN WA FREE -->
+          <div style="background:#f3eee0;border-radius:8px;padding:14px">
+            <p style="font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;color:#80552c;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px">Eastern Washington — Free</p>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">11. Colville National Forest — Stevens County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Millions of acres of USFS land in NE Washington. Take any forest road off US-395 north of Colville into the hills and find a road bank or gravel pit with a solid earthen backstop. No fee. Common practice area for northeast WA hunters.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">12. Sinlahekin Wildlife Area — Okanogan County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW Wildlife Area north of Tonasket off Loomis-Oroville Rd. Open terrain with road cuts providing natural backstops. Free access. Good option before hunting north Okanogan.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">13. Okanogan-Wenatchee National Forest — North — Okanogan County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Vast USFS land off SR-20 near Twisp and Winthrop. Take forest roads into the hills above the Methow Valley and find a solid earthen hillside. No fee. Popular with Methow Valley hunters.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">14. Swanson Lakes Wildlife Area — Lincoln County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW land in Lincoln County with open terrain. Take SR-2 west of Davenport and head north into the wildlife area. Coulees and draw edges provide natural backstops. Free access.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">15. Columbia Basin Wildlife Area — Grant County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW land in the Columbia Basin with sagebrush coulees providing natural backstops. Take SR-17 north of Moses Lake into the Wildlife Area. Free with standard WA hunting license.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">16. Quilomene Wildlife Area — Kittitas County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW land north of Vantage with deep coulees providing excellent natural backstops. Take Huntzinger Rd north from Vantage off I-90. Free access on WDFW land.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">17. Umatilla National Forest — Columbia County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">USFS land in the Blue Mountains south of Dayton off SR-12. Take forest roads into the Tucannon drainage. Steep hillsides provide excellent backstops. No fee. Good practice location for Blue Mountains elk hunters.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">18. Little Pend Oreille NWR — Stevens County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">Federal public land east of Colville off SR-20. Road cuts and hillsides on the refuge boundary areas provide shooting opportunities. Check refuge regulations before shooting — confirm open areas with the refuge manager at fws.gov/refuge/little-pend-oreille.</p>
+              </div>
+              <div style="padding:10px 0;border-bottom:1px solid rgba(195,200,193,.3)">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">19. Wenas Wildlife Area — Yakima County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW Wildlife Area north of Selah off Wenas Rd. Rolling sagebrush hills with road cuts providing backstops. Free access. Common practice location for hunters targeting the Naches and Oak Creek elk areas.</p>
+              </div>
+              <div style="padding:10px 0">
+                <p style="font-family:'Work Sans',sans-serif;font-size:13px;font-weight:700;color:#172c1d">20. Asotin Creek Wildlife Area — Asotin County</p>
+                <p style="font-family:'Work Sans',sans-serif;font-size:12px;color:#737972;line-height:1.6">WDFW land in the Snake River country south of Clarkston. Deep canyon draws provide natural backstops. Take SR-129 south of Clarkston into the Asotin Creek drainage. Free access. Popular with SE Washington hunters before deer season.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end pack-weapon -->
 
   </main>
 
@@ -4469,7 +4821,8 @@ function setPackTab(t){
   document.getElementById('pack-day').style.display=t==='day'?'block':'none';
   document.getElementById('pack-multi').style.display=t==='multi'?'block':'none';
   document.getElementById('pack-firstaid').style.display=t==='firstaid'?'block':'none';
-  ['day','multi','firstaid'].forEach(function(id){
+  document.getElementById('pack-weapon').style.display=t==='weapon'?'block':'none';
+  ['day','multi','firstaid','weapon'].forEach(function(id){
     var btn=document.getElementById('ptab-'+id);
     if(!btn)return;
     var active=t===id;
