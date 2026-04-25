@@ -4043,13 +4043,7 @@ function openModal(id){
   document.getElementById('modalTitle').textContent = s.name;
   document.getElementById('modalSub').textContent = s.subname + ' · ' + s.gmu;
 
-  // Signs to look for
-  const signs = SIGN_GUIDES[s.deer] || GENERIC_SIGNS;
-  const signsHTML = signs.map(sg => `
-    <div style="margin-bottom:14px;padding-bottom:14px;border-bottom:1px solid rgba(195,200,193,.25)">
-      <div style="font-family:'Work Sans',sans-serif;font-size:12px;font-weight:700;color:#061b0e;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">${sg.sign}</div>
-      <div style="font-family:'Work Sans',sans-serif;font-size:13px;color:#434843;line-height:1.65">${sg.desc}</div>
-    </div>`).join('');
+  // Signs to Look For moved to Know Your Prey animal modal
 
   // Body — editorial sections
   const body = document.getElementById('modalBody');
@@ -4436,13 +4430,7 @@ function openModal(id){
       <span class="material-symbols-outlined" style="color:#ba1a1a;font-size:18px;flex-shrink:0;margin-top:1px">warning</span>
       <p style="font-size:12px;color:#434843;line-height:1.6"><strong style="color:#ba1a1a">Important:</strong> ${h.warning}</p>
     </div>
-    <div style="margin-top:24px;padding:20px;background:#f8f3e4;border-radius:10px;border-left:4px solid #944a00">
-      <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
-        <div style="width:8px;height:8px;background:#944a00;flex-shrink:0"></div>
-        <h3 style="font-family:'Newsreader',Georgia,serif;font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#061b0e">🔍 Signs to Look For on the Ground</h3>
-      </div>
-      ${signsHTML}
-    </div>`;
+`;  // Signs to Look For removed — now lives on Know Your Prey animal cards
 
   // Footer actions
   const dirUrl = 'https://www.google.com/maps/search/' + encodeURIComponent(s.name + ' ' + s.subname.split('—')[0].trim() + ' Washington');
@@ -5211,6 +5199,27 @@ function openAnimalModal(cat,id){
         }).join('')
       + '</div>';
     body.appendChild(behSection);
+
+  // ── SIGNS TO LOOK FOR — moved from Hunting Spots modal ─────────────────
+  const animalSigns = SIGN_GUIDES[a.id] || GENERIC_SIGNS;
+  if(animalSigns && animalSigns.length){
+    const signSection = document.createElement('div');
+    signSection.style.cssText = 'margin-top:28px;border-top:1px solid rgba(195,200,193,.3);padding-top:24px';
+    signSection.innerHTML =
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">'
+      + '<span style="font-size:18px">🔍</span>'
+      + '<h3 style="font-family:Newsreader,Georgia,serif;font-size:17px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:#061b0e">Signs to Look For on the Ground</h3>'
+      + '</div>'
+      + '<div style="display:flex;flex-direction:column;gap:0">'
+      + animalSigns.map(sg =>
+          '<div style="padding:12px 0;border-bottom:1px solid rgba(195,200,193,.25)">'
+          + '<div style="font-family:Work Sans,sans-serif;font-size:11px;font-weight:700;color:#061b0e;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px">'+sg.sign+'</div>'
+          + '<div style="font-family:Work Sans,sans-serif;font-size:13px;color:#434843;line-height:1.65">'+sg.desc+'</div>'
+          + '</div>'
+        ).join('')
+      + '</div>';
+    body.appendChild(signSection);
+  }
   }
   const warn = document.createElement('div');
   warn.style.cssText = 'margin-top:24px;padding:14px;border:1px solid rgba(186,26,26,.2);background:rgba(186,26,26,.04);display:flex;gap:10px';
