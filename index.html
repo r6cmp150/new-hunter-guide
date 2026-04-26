@@ -1577,7 +1577,8 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
 #screen-pack .safety-chip { background:#fff;border-radius:8px;padding:10px 12px;font-size:12px;font-weight:600;color:#1d1c13;border:1px solid rgba(195,200,193,.5) }
 #screen-pack .fak-item { display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid rgba(195,200,193,.25);cursor:pointer }
 #screen-pack .fak-item:last-child { border-bottom:none }
-#screen-pack .fak-name { font-size:13px;font-weight:600;color:#061b0e;margin-bottom:2px }
+#screen-pack .fak-name { font-size:13px;font-weight:600;color:#061b0e;margin-bottom:2px;display:flex;flex-wrap:wrap;align-items:center;gap:6px }
+  #screen-pack .fak-name span { flex-shrink:0;vertical-align:unset !important;margin-left:0 !important }
 #screen-pack .fak-note { font-size:11px;color:#737973;line-height:1.5 }
 #screen-pack .multi-item { display:flex;gap:12px;padding:12px 0;border-bottom:1px solid rgba(195,200,193,.25) }
 #screen-pack .multi-item:last-child { border-bottom:none }
@@ -1597,6 +1598,8 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
   #screen-pack .firearms-inner { grid-template-columns:1fr !important }
   #screen-pack .multi-grid { grid-template-columns:1fr !important }
   #screen-pack .fak-grid { grid-template-columns:1fr !important }
+  /* Stack mandatory badge below item name on mobile */
+  #screen-pack .fak-name { flex-direction:column !important; align-items:flex-start !important; gap:4px !important }
   /* Collapse all inline two-column grids inside multi-day */
   #screen-pack [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important }
   #screen-pack [style*="grid-column:span 2"] { grid-column:span 1 !important }
@@ -1674,11 +1677,11 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
           <p style="font-size:16px;color:#434843;line-height:1.7;max-width:520px">Leaving in the morning, back by dark. Typically 6–10 miles of hiking. Gear assumes <strong style="text-decoration:underline;text-decoration-color:rgba(245,102,0,.35)">WA fall weather</strong>: cold mornings, possible rain.</p>
         </div>
         <!-- Tab bar -->
-        <div class="pack-tabs" style="display:inline-flex;flex-wrap:wrap;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;align-self:flex-start">
-          <button id="ptab-day" onclick="setPackTab('day')" style="padding:10px 22px;border-radius:8px;background:#061b0e;color:#fff;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(6,27,14,.25);transition:all .15s">Day Hunt</button>
-          <button id="ptab-multi" onclick="setPackTab('multi')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">Multi-Day</button>
-          <button id="ptab-firstaid" onclick="setPackTab('firstaid')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">First Aid Kit</button>
-          <button id="ptab-weapon" onclick="setPackTab('weapon')" style="padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s">Prepare Your Weapon</button>
+        <div class="pack-tabs" style="display:grid;grid-template-columns:1fr 1fr;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;width:100%;box-sizing:border-box">
+          <button id="ptab-day" onclick="setPackTab('day')" style="padding:10px 12px;border-radius:8px;background:#061b0e;color:#fff;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(6,27,14,.25);transition:all .15s;text-align:center">Day Hunt</button>
+          <button id="ptab-multi" onclick="setPackTab('multi')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">Multi-Day</button>
+          <button id="ptab-firstaid" onclick="setPackTab('firstaid')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">First Aid Kit</button>
+          <button id="ptab-weapon" onclick="setPackTab('weapon')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">Prepare Weapon</button>
         </div>
       </div>
       <!-- Hero image -->
