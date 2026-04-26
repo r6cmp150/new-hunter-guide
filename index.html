@@ -1611,9 +1611,9 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
   #screen-pack [style*="grid-template-columns:1fr 1fr 1fr 1fr"] { grid-template-columns:1fr 1fr !important }
   #screen-pack [style*="display:grid"] { max-width:100% !important }
   #screen-pack img { max-width:100% !important; height:auto !important }
-  /* Tab buttons wrap on mobile */
-  #screen-pack .pack-tabs { flex-wrap:wrap !important; gap:6px !important }
-  #screen-pack #ptab-weapon { font-size:11px !important; padding:8px 12px !important }
+  /* Tab buttons stay as 2x2 grid on mobile */
+  #screen-pack .pack-tabs { grid-template-columns:1fr 1fr !important }
+  #screen-pack #ptab-weapon { font-size:13px !important; padding:10px 8px !important }
   /* Know Your Prey mobile strengthening */
   #screen-animals main { padding:20px 14px 60px !important; max-width:100vw !important; box-sizing:border-box !important }
   #screen-animals h1 { font-size:36px !important; line-height:1 !important; letter-spacing:-1px !important }
@@ -1677,11 +1677,11 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
           <p style="font-size:16px;color:#434843;line-height:1.7;max-width:520px">Leaving in the morning, back by dark. Typically 6–10 miles of hiking. Gear assumes <strong style="text-decoration:underline;text-decoration-color:rgba(245,102,0,.35)">WA fall weather</strong>: cold mornings, possible rain.</p>
         </div>
         <!-- Tab bar -->
-        <div class="pack-tabs" style="display:grid;grid-template-columns:1fr 1fr;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;width:100%;box-sizing:border-box">
-          <button id="ptab-day" onclick="setPackTab('day')" style="padding:10px 12px;border-radius:8px;background:#061b0e;color:#fff;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(6,27,14,.25);transition:all .15s;text-align:center">Day Hunt</button>
-          <button id="ptab-multi" onclick="setPackTab('multi')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">Multi-Day</button>
-          <button id="ptab-firstaid" onclick="setPackTab('firstaid')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">First Aid Kit</button>
-          <button id="ptab-weapon" onclick="setPackTab('weapon')" style="padding:10px 12px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;text-align:center">Prepare Weapon</button>
+        <div class="pack-tabs" style="display:grid;grid-template-columns:1fr 1fr;background:#f8f3e4;padding:6px;border-radius:12px;gap:4px;width:100%;max-width:600px;box-sizing:border-box">
+          <button id="ptab-day" onclick="setPackTab('day')" style="padding:10px 8px;border-radius:8px;background:#061b0e;color:#fff;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;box-shadow:0 2px 8px rgba(6,27,14,.25);transition:all .15s;white-space:nowrap;text-align:center">Day Hunt</button>
+          <button id="ptab-multi" onclick="setPackTab('multi')" style="padding:10px 8px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center">Multi-Day</button>
+          <button id="ptab-firstaid" onclick="setPackTab('firstaid')" style="padding:10px 8px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center">First Aid Kit</button>
+          <button id="ptab-weapon" onclick="setPackTab('weapon')" style="padding:10px 8px;border-radius:8px;background:transparent;color:#434843;font-family:'Work Sans',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;white-space:nowrap;text-align:center">Prepare Weapon</button>
         </div>
       </div>
       <!-- Hero image -->
