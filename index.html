@@ -3939,9 +3939,26 @@ function homePage(){
   if(shell)  shell.classList.remove('active');
   if(homePg) homePg.style.display = '';
   document.body.style.overflow = '';
+  // Reset location search
+  userLat = null;
+  userLng = null;
+  searchLabel = null;
+  searchMode = false;
+  var heroInput = document.getElementById('heroSearchInput');
+  if(heroInput) heroInput.value = '';
 }
 
 function showScreen(name){
+  // Reset location search filter when leaving the browse/map screen
+  if(name !== 'browse'){
+    userLat = null;
+    userLng = null;
+    searchLabel = null;
+    searchMode = false;
+    // Clear the hero search input too
+    var heroInput = document.getElementById('heroSearchInput');
+    if(heroInput) heroInput.value = '';
+  }
   // Hide both nav elements when on browse (it has its own top nav)
   const isBrowse = name === 'browse' || name === 'become' || name === 'quiz' || name === 'animals' || name === 'pack' || name === 'donate' || name === 'budget' || name === 'privacy';
   const hdr = document.getElementById('innerHeader');
