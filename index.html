@@ -5294,101 +5294,121 @@ function getSeasonStatus(waRegs) {
   const seasonReg = waRegs.find(r => r.rule === 'Season' || r.rule === 'Archery Season' || r.rule === 'Modern Firearm');
   const detail = seasonReg ? seasonReg.detail.toLowerCase() : '';
 
-  // ── SEASON WINDOWS — verified against WDFW 2025-26 regulations ──────────
-  // Each animal type gets its own precise windows based on actual WA seasons
+  // ── SEASON WINDOWS — verified against HuntWise/WDFW 2025-26 ─────────────
   const windows = [];
 
-  // DEER (black-tail, mule, whitetail): archery Sept, firearm mid-Oct–Nov
+  // DEER: Modern Firearm Oct 11-31 (black-tail/mule), Oct 11-24 (whitetail)
   if (detail.includes('deer') || detail.includes('black-tail') || detail.includes('mule') || detail.includes('whitetail') || detail.includes('antler')) {
-    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Archery Season' });
-    windows.push({ start: doy(10,12),end: doy(11,20), type: 'Firearm Season' });
-    windows.push({ start: doy(10,25),end: doy(11,10), type: 'Muzzleloader Season' });
+    windows.push({ start: doy(9,1),  end: doy(9,26),  type: 'Archery Season' });
+    windows.push({ start: doy(10,11),end: doy(11,19), type: 'Firearm Season' });
+    windows.push({ start: doy(9,27), end: doy(10,5),  type: 'Muzzleloader Season' });
   }
-  // ELK (Rocky Mtn & Roosevelt): archery Sept, firearm Oct-Nov
+  // ELK: Western WA firearm Nov 1-12; Eastern WA Oct 25-Nov 15
   if (detail.includes('elk') || detail.includes('roosevelt')) {
-    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Archery Season' });
-    windows.push({ start: doy(10,12),end: doy(11,20), type: 'Firearm Season' });
+    windows.push({ start: doy(9,6),  end: doy(9,18),  type: 'Archery Season' });
+    windows.push({ start: doy(10,25),end: doy(11,15), type: 'Firearm Season' });
   }
-  // MOOSE: Sept-Oct (draw only)
+  // MOOSE: Oct 1 – Nov 30 (special permit)
   if (detail.includes('moose')) {
-    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
+    windows.push({ start: doy(10,1), end: doy(11,30), type: 'General Season' });
   }
-  // BLACK BEAR: spring Apr-May AND fall Aug-Nov
+  // BLACK BEAR: Aug 1 – Nov 15 (fall); spring not listed on HuntWise
   if (detail.includes('bear') || detail.includes('august') || detail.includes('spring bear')) {
-    windows.push({ start: doy(4,15), end: doy(5,31),  type: 'Spring Bear Season' });
-    windows.push({ start: doy(8,1),  end: doy(11,15), type: 'Fall Bear Season' });
+    windows.push({ start: doy(8,1),  end: doy(11,15), type: 'Firearm Season' });
   }
-  // COUGAR: Sept 1 – Mar 31 (or until quota)
+  // COUGAR: Sept 1 – Mar 31 (or until cap)
   if (detail.includes('cougar') || detail.includes('harvest quota') || detail.includes('march 31')) {
-    windows.push({ start: doy(9,1),  end: doy(3,31),  type: 'Cougar Season' });
+    windows.push({ start: doy(9,1),  end: doy(3,31),  type: 'Firearm Season' });
   }
-  // MOUNTAIN GOAT: Sept-Oct (draw only)
+  // MOUNTAIN GOAT: Sept 1 – Nov 30 (special permit)
   if (detail.includes('mountain goat') || detail.includes('goat permit')) {
-    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
+    windows.push({ start: doy(9,1),  end: doy(11,30), type: 'General Season' });
   }
-  // BIGHORN SHEEP: Sept-Oct (draw only)
+  // BIGHORN SHEEP: Sept 15 – Nov 15 (special permit)
   if (detail.includes('bighorn') || detail.includes('sheep permit')) {
-    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
+    windows.push({ start: doy(9,15), end: doy(11,15), type: 'General Season' });
   }
-  // PRONGHORN: Sept-Oct (draw only)
+  // PRONGHORN: Sept-Oct (special permit, WDFW draw)
   if (detail.includes('pronghorn') || detail.includes('antelope permit')) {
     windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
   }
-  // TURKEY: spring Apr 15–May 31 AND fall Sept–Nov
+  // TURKEY: Spring Apr 15–May 31 AND Fall Sept 1–Dec 31
   if (detail.includes('turkey')) {
     windows.push({ start: doy(4,15), end: doy(5,31),  type: 'Spring Season' });
-    windows.push({ start: doy(9,1),  end: doy(11,30), type: 'Fall Season' });
+    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Fall Season' });
   }
-  // PHEASANT: Oct 1 – Jan 31 (statewide general)
+  // PHEASANT: Eastern WA Oct 18–Jan 19; Western WA Sept 20–Dec 15
   if (detail.includes('pheasant')) {
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Pheasant Season' });
+    windows.push({ start: doy(10,18),end: doy(1,19),  type: 'Firearm Season' });
   }
-  // GROUSE / SHARPTAIL / CHUKAR / HUN / QUAIL: Oct 1 – Jan 31
-  if (detail.includes('grouse') || detail.includes('sharptail') || detail.includes('chukar') || detail.includes('hun') || detail.includes('partridge') || detail.includes('quail') || (detail.includes('upland') && !detail.includes('pheasant') && !detail.includes('turkey'))) {
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Upland Season' });
+  // FOREST GROUSE (Blue, Ruffed): Sept 15 – Jan 15
+  if (detail.includes('grouse') && !detail.includes('sharptail') && !detail.includes('sage')) {
+    windows.push({ start: doy(9,15), end: doy(1,15),  type: 'Firearm Season' });
   }
-  // DOVE: Sept 1 – Dec 16
+  // SHARP-TAILED & SAGE GROUSE: Closed statewide per HuntWise
+  if (detail.includes('sharptail') || detail.includes('sharp-tailed') || detail.includes('sage grouse')) {
+    return { open: false, type: 'Closed Season', nextOpen: null };
+  }
+  // CHUKAR: Eastern WA Oct 4 – Jan 31
+  if (detail.includes('chukar')) {
+    windows.push({ start: doy(10,4), end: doy(1,31),  type: 'Firearm Season' });
+  }
+  // HUNGARIAN PARTRIDGE (HUN / Gray Partridge): Eastern WA Oct 4 – Jan 19
+  if (detail.includes('hun') || detail.includes('partridge') || detail.includes('gray partridge')) {
+    windows.push({ start: doy(10,4), end: doy(1,19),  type: 'Firearm Season' });
+  }
+  // QUAIL: Eastern WA Oct 18–Jan 19; Western WA Sept 20–Nov 30
+  if (detail.includes('quail')) {
+    windows.push({ start: doy(10,18),end: doy(1,19),  type: 'Firearm Season' });
+  }
+  // DOVE: Sept 1 – Oct 30 (per HuntWise — shorter than previously listed)
   if (detail.includes('dove') || detail.includes('mourning')) {
-    windows.push({ start: doy(9,1),  end: doy(12,16), type: 'Dove Season' });
+    windows.push({ start: doy(9,1),  end: doy(10,30), type: 'Firearm Season' });
   }
-  // SNIPE: Sept 1 – Dec 31
+  // SNIPE: included with Duck/Coot — Oct 11–Jan 25
   if (detail.includes('snipe')) {
-    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Snipe Season' });
+    windows.push({ start: doy(10,11),end: doy(1,25),  type: 'Firearm Season' });
   }
-  // SANDHILL CRANE: late Sept – Oct (special permit, very limited)
+  // SANDHILL CRANE: Sept 15–Oct 31 (special permit, limited)
   if (detail.includes('sandhill') || detail.includes('crane')) {
-    windows.push({ start: doy(9,15), end: doy(10,31), type: 'Crane Season' });
+    windows.push({ start: doy(9,15), end: doy(10,31), type: 'Firearm Season' });
   }
-  // TEAL: early Sept-only season + regular waterfowl Oct-Jan
+  // TEAL: early Sept 20-27 special + regular Oct 11–Jan 25
   if (detail.includes('teal')) {
-    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Early Teal Season' });
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+    windows.push({ start: doy(9,20), end: doy(9,27),  type: 'Early Teal Season' });
+    windows.push({ start: doy(10,22),end: doy(1,25),  type: 'Firearm Season' });
   }
-  // DUCK: Oct – Jan (no early teal period for ducks generally)
+  // DUCK: Special Sept 20-27 + Regular Oct 11–Jan 25
   if (detail.includes('duck') || (detail.includes('waterfowl') && !detail.includes('teal'))) {
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Duck Season' });
+    windows.push({ start: doy(9,20), end: doy(9,27),  type: 'Special Season' });
+    windows.push({ start: doy(10,11),end: doy(1,25),  type: 'Firearm Season' });
   }
-  // GOOSE / BRANT: Oct – Jan regular + Feb-Apr conservation order for some species
+  // GOOSE: Sept 6 – Feb 15 (varies by Goose Management Area)
   if ((detail.includes('goose') || detail.includes('brant')) && !detail.includes('snow')) {
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+    windows.push({ start: doy(9,6),  end: doy(2,15),  type: 'Firearm Season' });
   }
-  // SNOW GOOSE: Oct-Jan regular + Feb-Apr conservation order
+  // SNOW GOOSE: Oct–Jan regular + Feb–Apr conservation order
   if (detail.includes('snow') || detail.includes('conservation order')) {
-    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+    windows.push({ start: doy(10,1), end: doy(1,25),  type: 'Firearm Season' });
     windows.push({ start: doy(2,1),  end: doy(4,30),  type: 'Conservation Order' });
   }
   // RABBIT / HARE / COTTONTAIL: Sept 1 – Mar 15
   if (detail.includes('rabbit') || detail.includes('hare') || detail.includes('cottontail') || detail.includes('snowshoe')) {
-    windows.push({ start: doy(9,1),  end: doy(3,15),  type: 'Small Game Season' });
+    windows.push({ start: doy(9,1),  end: doy(3,15),  type: 'Firearm Season' });
   }
-  // SQUIRREL: Sept 1 – Dec 31 (Western Gray restricted; Fox/Eastern Gray year-round)
+  // SQUIRREL: Sept 1 – Dec 31
   if (detail.includes('squirrel')) {
-    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Squirrel Season' });
+    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Firearm Season' });
   }
-  // BOBCAT: Oct 1 – Mar 15
-  if (detail.includes('bobcat') || detail.includes('october 1') && detail.includes('march 15')) {
-    windows.push({ start: doy(10,1), end: doy(3,15),  type: 'Bobcat Season' });
+  // BOBCAT: Sept 1 – Mar 15 (per HuntWise small game dates)
+  if (detail.includes('bobcat')) {
+    windows.push({ start: doy(9,1),  end: doy(3,15),  type: 'Firearm Season' });
   }
+  // COYOTE: year-round, no closed season
+  if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('no bag limit') || detail.includes('coyote')) {
+    return { open: true, type: 'Open Year-Round', nextOpen: null };
+  }
+
   // COYOTE: year-round, no closed season
   if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('no bag limit') || detail.includes('coyote')) {
     return { open: true, type: 'Open Year-Round', nextOpen: null };
