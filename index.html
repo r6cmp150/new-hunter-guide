@@ -5294,62 +5294,104 @@ function getSeasonStatus(waRegs) {
   const seasonReg = waRegs.find(r => r.rule === 'Season' || r.rule === 'Archery Season' || r.rule === 'Modern Firearm');
   const detail = seasonReg ? seasonReg.detail.toLowerCase() : '';
 
-  // Common WA season date patterns — derived from regulation text
+  // ── SEASON WINDOWS — verified against WDFW 2025-26 regulations ──────────
+  // Each animal type gets its own precise windows based on actual WA seasons
   const windows = [];
 
-  // Archery: mid-Sept to mid-Oct
-  if (detail.includes('archery') || detail.includes('sept') || detail.includes('september')) {
-    windows.push({ start: doy(9,1), end: doy(10,15), type: 'Archery Season' });
+  // DEER (black-tail, mule, whitetail): archery Sept, firearm mid-Oct–Nov
+  if (detail.includes('deer') || detail.includes('black-tail') || detail.includes('mule') || detail.includes('whitetail') || detail.includes('antler')) {
+    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Archery Season' });
+    windows.push({ start: doy(10,12),end: doy(11,20), type: 'Firearm Season' });
+    windows.push({ start: doy(10,25),end: doy(11,10), type: 'Muzzleloader Season' });
   }
-  // Modern firearm: mid-Oct to mid-Nov
-  if (detail.includes('firearm') || detail.includes('modern') || detail.includes('october') || detail.includes('oct')) {
-    windows.push({ start: doy(10,12), end: doy(11,20), type: 'Firearm Season' });
+  // ELK (Rocky Mtn & Roosevelt): archery Sept, firearm Oct-Nov
+  if (detail.includes('elk') || detail.includes('roosevelt')) {
+    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Archery Season' });
+    windows.push({ start: doy(10,12),end: doy(11,20), type: 'Firearm Season' });
   }
-  // Muzzleloader: late Oct to early Nov
-  if (detail.includes('muzzle')) {
-    windows.push({ start: doy(10,25), end: doy(11,10), type: 'Muzzleloader Season' });
+  // MOOSE: Sept-Oct (draw only)
+  if (detail.includes('moose')) {
+    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
   }
-  // Turkey spring: April 15 - May 31
-  if (detail.includes('april') || detail.includes('spring') || detail.includes('turkey') || detail.includes('april 15')) {
-    windows.push({ start: doy(4,15), end: doy(5,31), type: 'Spring Season' });
+  // BLACK BEAR: spring Apr-May AND fall Aug-Nov
+  if (detail.includes('bear') || detail.includes('august') || detail.includes('spring bear')) {
+    windows.push({ start: doy(4,15), end: doy(5,31),  type: 'Spring Bear Season' });
+    windows.push({ start: doy(8,1),  end: doy(11,15), type: 'Fall Bear Season' });
   }
-  // Turkey fall: Sept - Oct
-  if (detail.includes('fall') && (detail.includes('turkey') || detail.includes('sept'))) {
-    windows.push({ start: doy(9,1), end: doy(10,31), type: 'Fall Season' });
+  // COUGAR: Sept 1 – Mar 31 (or until quota)
+  if (detail.includes('cougar') || detail.includes('harvest quota') || detail.includes('march 31')) {
+    windows.push({ start: doy(9,1),  end: doy(3,31),  type: 'Cougar Season' });
   }
-  // Waterfowl / duck: Oct - Jan
-  if (detail.includes('duck') || detail.includes('waterfowl') || detail.includes('teal') || detail.includes('september 1')) {
-    windows.push({ start: doy(9,1), end: doy(9,30), type: 'Early Teal Season' });
-    windows.push({ start: doy(10,1), end: doy(1,31), type: 'Waterfowl Season' });
+  // MOUNTAIN GOAT: Sept-Oct (draw only)
+  if (detail.includes('mountain goat') || detail.includes('goat permit')) {
+    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
   }
-  // Goose / snow goose conservation: Feb - April
-  if (detail.includes('february') || detail.includes('conservation') || detail.includes('goose')) {
-    windows.push({ start: doy(10,1), end: doy(1,31), type: 'Regular Season' });
-    windows.push({ start: doy(2,1), end: doy(4,30), type: 'Conservation Order' });
+  // BIGHORN SHEEP: Sept-Oct (draw only)
+  if (detail.includes('bighorn') || detail.includes('sheep permit')) {
+    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
   }
-  // Bear: Aug - Nov
-  if (detail.includes('bear') || detail.includes('august') || detail.includes('aug')) {
-    windows.push({ start: doy(8,1), end: doy(11,15), type: 'Bear Season' });
+  // PRONGHORN: Sept-Oct (draw only)
+  if (detail.includes('pronghorn') || detail.includes('antelope permit')) {
+    windows.push({ start: doy(9,1),  end: doy(10,31), type: 'General Season' });
   }
-  // Bobcat: Oct 1 - Mar 15
+  // TURKEY: spring Apr 15–May 31 AND fall Sept–Nov
+  if (detail.includes('turkey')) {
+    windows.push({ start: doy(4,15), end: doy(5,31),  type: 'Spring Season' });
+    windows.push({ start: doy(9,1),  end: doy(11,30), type: 'Fall Season' });
+  }
+  // PHEASANT: Oct 1 – Jan 31 (statewide general)
+  if (detail.includes('pheasant')) {
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Pheasant Season' });
+  }
+  // GROUSE / SHARPTAIL / CHUKAR / HUN / QUAIL: Oct 1 – Jan 31
+  if (detail.includes('grouse') || detail.includes('sharptail') || detail.includes('chukar') || detail.includes('hun') || detail.includes('partridge') || detail.includes('quail') || (detail.includes('upland') && !detail.includes('pheasant') && !detail.includes('turkey'))) {
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Upland Season' });
+  }
+  // DOVE: Sept 1 – Dec 16
+  if (detail.includes('dove') || detail.includes('mourning')) {
+    windows.push({ start: doy(9,1),  end: doy(12,16), type: 'Dove Season' });
+  }
+  // SNIPE: Sept 1 – Dec 31
+  if (detail.includes('snipe')) {
+    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Snipe Season' });
+  }
+  // SANDHILL CRANE: late Sept – Oct (special permit, very limited)
+  if (detail.includes('sandhill') || detail.includes('crane')) {
+    windows.push({ start: doy(9,15), end: doy(10,31), type: 'Crane Season' });
+  }
+  // TEAL: early Sept-only season + regular waterfowl Oct-Jan
+  if (detail.includes('teal')) {
+    windows.push({ start: doy(9,1),  end: doy(9,30),  type: 'Early Teal Season' });
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+  }
+  // DUCK: Oct – Jan (no early teal period for ducks generally)
+  if (detail.includes('duck') || (detail.includes('waterfowl') && !detail.includes('teal'))) {
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Duck Season' });
+  }
+  // GOOSE / BRANT: Oct – Jan regular + Feb-Apr conservation order for some species
+  if ((detail.includes('goose') || detail.includes('brant')) && !detail.includes('snow')) {
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+  }
+  // SNOW GOOSE: Oct-Jan regular + Feb-Apr conservation order
+  if (detail.includes('snow') || detail.includes('conservation order')) {
+    windows.push({ start: doy(10,1), end: doy(1,31),  type: 'Regular Season' });
+    windows.push({ start: doy(2,1),  end: doy(4,30),  type: 'Conservation Order' });
+  }
+  // RABBIT / HARE / COTTONTAIL: Sept 1 – Mar 15
+  if (detail.includes('rabbit') || detail.includes('hare') || detail.includes('cottontail') || detail.includes('snowshoe')) {
+    windows.push({ start: doy(9,1),  end: doy(3,15),  type: 'Small Game Season' });
+  }
+  // SQUIRREL: Sept 1 – Dec 31 (Western Gray restricted; Fox/Eastern Gray year-round)
+  if (detail.includes('squirrel')) {
+    windows.push({ start: doy(9,1),  end: doy(12,31), type: 'Squirrel Season' });
+  }
+  // BOBCAT: Oct 1 – Mar 15
   if (detail.includes('bobcat') || detail.includes('october 1') && detail.includes('march 15')) {
-    windows.push({ start: doy(10,1), end: doy(3,15), type: 'Bobcat Season' });
+    windows.push({ start: doy(10,1), end: doy(3,15),  type: 'Bobcat Season' });
   }
-  // Cougar: Sept 1 - Mar 31
-  if (detail.includes('september 1') && detail.includes('march 31') || detail.includes('harvest quota')) {
-    windows.push({ start: doy(9,1), end: doy(3,31), type: 'Cougar Season' });
-  }
-  // Rabbit/hare: Sept 1 - Mar 15
-  if (detail.includes('rabbit') || detail.includes('hare') || detail.includes('cottontail') || detail.includes('september 1 through march')) {
-    windows.push({ start: doy(9,1), end: doy(3,15), type: 'Small Game Season' });
-  }
-  // Upland birds: Sept - Dec
-  if (detail.includes('pheasant') || detail.includes('grouse') || detail.includes('quail') || detail.includes('chukar')) {
-    windows.push({ start: doy(9,1), end: doy(12,31), type: 'Upland Season' });
-  }
-  // Dove: Sept 1 opener
-  if (detail.includes('dove') || detail.includes('september 1') || detail.includes('sept 1')) {
-    windows.push({ start: doy(9,1), end: doy(12,15), type: 'Dove Season' });
+  // COYOTE: year-round, no closed season
+  if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('no bag limit') || detail.includes('coyote')) {
+    return { open: true, type: 'Open Year-Round', nextOpen: null };
   }
 
   // If no windows detected, default to Oct-Nov firearm
@@ -5373,18 +5415,20 @@ function getSeasonStatus(waRegs) {
     }
   }
 
-  // Not in season — find next opening
+  // Not in season — find next opening (show month only, modern firearm priority)
   const monthNames = ['','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   let nearest = null;
   let nearestDiff = Infinity;
-  for (const w of windows) {
+  // Prioritise 'Firearm Season' window for the "Opens" label — most relevant for beginners
+  const firearmWindow = windows.find(w => w.type === 'Firearm Season' || w.type === 'Fall Season' || w.type === 'Pheasant Season' || w.type === 'Upland Season' || w.type === 'Duck Season' || w.type === 'Regular Season' || w.type === 'Fall Bear Season' || w.type === 'General Season');
+  const targetWindows = firearmWindow ? [firearmWindow] : windows;
+  for (const w of targetWindows) {
     const startMonth = Math.floor(w.start / 100);
-    const startDay = w.start % 100;
     let diff = w.start - todayDoy;
     if (diff < 0) diff += 1200; // next year
     if (diff < nearestDiff) {
       nearestDiff = diff;
-      nearest = monthNames[startMonth] + ' ' + startDay;
+      nearest = monthNames[startMonth]; // month only — no specific day
     }
   }
 
@@ -5417,7 +5461,7 @@ function openAnimalModal(cat,id){
         var ss = getSeasonStatus(a.waRegs);
         if(ss.open) return '<span style="font-family:Work Sans,sans-serif;font-size:13px;font-weight:700;color:#2a7a3a">✓ ' + ss.type + '</span>';
         return '<span style="font-family:Work Sans,sans-serif;font-size:12px;font-weight:700;color:#944a00">Closed</span>'
-          + (ss.nextOpen ? '<span style="font-family:Work Sans,sans-serif;font-size:10px;color:#434843;display:block;margin-top:3px">Opens ' + ss.nextOpen + '</span>' : '');
+          + (ss.nextOpen ? '<span style="font-family:Work Sans,sans-serif;font-size:10px;color:#434843;display:block;margin-top:3px">Modern Firearm opens ' + ss.nextOpen + '</span>' : '');
       })()
     + '</div>'
     + '</div>';
