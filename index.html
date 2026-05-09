@@ -3090,8 +3090,8 @@ const SPOTS=[
   {id:"columbia-basin-pheasant-units",deer:"pheasant",name:"Columbia Basin Wildlife Area — Pheasant Release Units",subname:"Grant County — WDFW Stocked Pheasant",lat:47.1068,lng:-119.2687,place_id:"ChIJgR2Z1YeFplQRmM7KxoHX-hc",gmu:"Columbia Basin",publicLand:true,difficulty:"Beginner",region:"Central — Grant County",summary:"WDFW releases thousands of pheasants into the Columbia Basin Wildlife Area units every fall. The top public pheasant hunting destination in Washington with over 192000 acres of access.",access:"From Moses Lake: Head west on SR-170 or SR-28. Multiple unit access points throughout Grant County. Download the WDFW Columbia Basin Wildlife Area map before going.",how:{overview:"The Columbia Basin Wildlife Area is WA premier public pheasant hunting area. WDFW releases thousands of birds here annually into habitat with CRP grass cattail marshes and crop field edges.",steps:["Download the WDFW Columbia Basin Wildlife Area map — it shows all open units and access roads.","Check the WDFW website or call WDFW for the current pheasant release schedule before going.","Hunt field edges and CRP grass strips in the morning when birds are feeding and moving.","Without a dog walk grid patterns through the cover — kick every brush pile and cattail patch.","Hunt the sunny south-facing slopes in the afternoon when birds are loafing in the warmth."],terrain:"Flat to gently rolling. Mix of open grassland crop fields and cattail draws. Very easy walking.",bestTime:"Late October through November after WDFW bird releases. Call WDFW to confirm recent releases.",gear:["Blaze orange hat and vest (required)","12 or 20 gauge with #5 or #6 shot","Hunting dog is a major advantage","Lots of water — dry eastern WA","WDFW Columbia Basin Wildlife Area map"],warning:"Grant County leads WA in pheasant and waterfowl production. Check which units are open and whether recent pheasant releases have occurred at wdfw.wa.gov before making the drive."}}
 ];
 
-const DEER_COLORS={"black-tail":"#4ade80","mule-deer":"#facc15","whitetail":"#fb923c","elk":"#ef4444","roosevelt-elk":"#fb923c","moose":"#a78bfa","black-bear":"#8b5cf6","cougar":"#f59e0b","mountain-goat":"#cbd5e1","bighorn-sheep":"#d97706","pronghorn":"#fbbf24","turkey":"#ea580c","pheasant":"#16a34a","grouse":"#6d7a5a","sharptail":"#a16207","chukar":"#dc2626","hun":"#78716c","quail":"#65a30d","dove":"#a8a29e","snipe":"#0d9488","sandhill-crane":"#6366f1","duck":"#0ea5e9","teal":"#06b6d4","goose":"#4a7c59","snow-goose":"#94a3b8","brant":"#0f766e","rabbit":"#94a3b8","squirrel":"#92400e","bobcat":"#c2410c","coyote":"#b45309"};
-const DEER_LABELS={"black-tail":"Black-tailed Deer","mule-deer":"Mule Deer","whitetail":"White-tailed Deer","elk":"Rocky Mtn Elk","roosevelt-elk":"Roosevelt Elk","moose":"Moose","black-bear":"Black Bear","cougar":"Cougar","mountain-goat":"Mountain Goat","bighorn-sheep":"Bighorn Sheep","pronghorn":"Pronghorn","turkey":"Wild Turkey","pheasant":"Ring-necked Pheasant","grouse":"Grouse","sharptail":"Sharp-tailed Grouse","chukar":"Chukar Partridge","hun":"Hungarian Partridge","quail":"California Quail","dove":"Mourning Dove","snipe":"Common Snipe","sandhill-crane":"Sandhill Crane","duck":"Ducks","teal":"Teal","goose":"Canada Geese","snow-goose":"Snow Geese","brant":"Brant","rabbit":"Rabbit / Hare","squirrel":"Tree Squirrel","bobcat":"Bobcat","coyote":"Coyote"};
+const DEER_COLORS={"black-tail":"#4ade80","mule-deer":"#facc15","whitetail":"#fb923c","elk":"#ef4444","roosevelt-elk":"#fb923c","moose":"#a78bfa","black-bear":"#8b5cf6","cougar":"#f59e0b","mountain-goat":"#cbd5e1","bighorn-sheep":"#d97706","pronghorn":"#fbbf24","turkey":"#ea580c","pheasant":"#16a34a","grouse":"#6d7a5a","chukar":"#dc2626","hun":"#78716c","quail":"#65a30d","dove":"#a8a29e","snipe":"#0d9488","sandhill-crane":"#6366f1","duck":"#0ea5e9","teal":"#06b6d4","goose":"#4a7c59","snow-goose":"#94a3b8","brant":"#0f766e","rabbit":"#94a3b8","squirrel":"#92400e","bobcat":"#c2410c","coyote":"#b45309"};
+const DEER_LABELS={"black-tail":"Black-tailed Deer","mule-deer":"Mule Deer","whitetail":"White-tailed Deer","elk":"Rocky Mtn Elk","roosevelt-elk":"Roosevelt Elk","moose":"Moose","black-bear":"Black Bear","cougar":"Cougar","mountain-goat":"Mountain Goat","bighorn-sheep":"Bighorn Sheep","pronghorn":"Pronghorn","turkey":"Wild Turkey","pheasant":"Ring-necked Pheasant","grouse":"Grouse","chukar":"Chukar Partridge","hun":"Hungarian Partridge","quail":"California Quail","dove":"Mourning Dove","snipe":"Common Snipe","sandhill-crane":"Sandhill Crane","duck":"Ducks","teal":"Teal","goose":"Canada Geese","snow-goose":"Snow Geese","brant":"Brant","rabbit":"Rabbit / Hare","squirrel":"Tree Squirrel","bobcat":"Bobcat","coyote":"Coyote"};
 
 const SIGN_GUIDES = {
   'black-tail': [
@@ -3149,14 +3149,6 @@ const SIGN_GUIDES = {
     {sign:'Roosting Cover',desc:'Heavy, dense grass or cattail stands near grain fields. Look for feathers and droppings concentrated in one area — that\'s the roost. Birds leave roost in morning toward food and return at evening.'},
     {sign:'Feathers',desc:'Rooster tail and body feathers near cover indicate hunting pressure or predator activity. Iridescent green neck feathers from roosters are easy to spot against dry grass.'},
     {sign:'Dusting Areas',desc:'Similar to turkey — fine bowl-shaped depressions in dirt, often at the base of shrubs or on old field roads. Pheasant feathers and tracks confirm use.'},
-  ],
-  'sharptail': [
-    {sign:'Tracks',desc:'Three forward toes, 1.5 inches long, in a walking pattern across open sagebrush soil, snow, and muddy pond edges. Sharptails walk more than most upland birds — look for long meandering track trails across open ground rather than just concentrated prints near cover.'},
-    {sign:'Droppings',desc:'Small cylindrical droppings, similar to blue grouse but found in open sagebrush and grassland rather than timber. Fresh droppings near rose hips and chokecherry shrubs confirm feeding activity. Coveys leave concentrated scat near dusting areas.'},
-    {sign:'Dusting Areas',desc:'Circular depressions 8–10 inches across in fine sandy soil in open sagebrush flats — groups of birds share dusting spots. Look for feathers from multiple birds mixed in the dust. These are reliable daily activity locations.'},
-    {sign:'Feathers',desc:'Speckled brown and white breast feathers and distinctive pointed tail feathers (sharper than other grouse) found near dusting areas and roost spots. Tail feathers are a definitive ID — narrow and pointed unlike the rounded tail of blue grouse.'},
-    {sign:'Lek Sites',desc:'In spring, sharptails display on traditional dancing grounds (leks) — open elevated areas of short grass. These leks are used for decades. Scouting a lek in spring tells you where birds will be come fall within a mile or two.'},
-    {sign:'Berry Shrubs',desc:'Heavily browsed rose hip, chokecherry, and snowberry shrubs with droppings underneath confirm fall feeding activity. These shrubs in shrub-steppe transition zones are the most reliable sign of sharptail presence.'},
   ],
   'duck': [
     {sign:'Tracks',desc:'Webbed three-toed prints, 2–3 inches depending on species, in mud along water edges. Mallard tracks are larger; teal much smaller. Concentrated tracks indicate feeding areas and loafing spots.'},
@@ -3409,11 +3401,6 @@ const BEHAVIOR_TAGS = {
     bedding:{time:'10:00 AM–3:30 PM',desc:'Roosts in dense conifers and dusts in fine dry soil midday.',look:'Dust bowls 8–12 inches across in fine dry soil on trails and forest roads. Feathers around dusting areas. Droppings under dense spruce or fir.'},
     watering:{time:'8:00–10:00 AM',desc:'Drinks at small streams and from dew-covered vegetation in the morning.',look:'Small clawed tracks at stream margins near berry patches.'},
   },
-  'sharptail': {
-    feeding:{time:'6:30–9:30 AM & 3:30–6:30 PM',desc:'Feeds in shrub-steppe grasslands on rose hips, chokecherries, grain stubble, and grasshoppers at dawn and late afternoon. Coveys of 10–30 birds feed together and flush in a loud group when approached.',look:'Scratched soil and clipped vegetation under rose and chokecherry shrubs. Small three-toed tracks 1.5 inches in dust or snow. Droppings in open sagebrush and grassland areas. Listen for the clucking cackle call at dawn — birds give away their position before they fly.'},
-    bedding:{time:'10:00 AM–3:00 PM',desc:'Loafs in open sagebrush flats and short grass areas during midday. Unlike forest grouse, sharptails prefer open ground and will sit in the open in light wind.',look:'Dusting areas in fine sandy soil in open sagebrush — circular depressions with feathers and droppings. Groups of 5–10 birds often share a dusting spot. Look for feathers in open grassy areas away from dense cover.'},
-    watering:{time:'8:00–10:00 AM & 4:30–6:00 PM',desc:'Drinks at stock ponds, seeps, and creek edges morning and evening. In dry eastern WA, water sources are critical concentrators of birds.',look:'Small three-toed tracks at muddy stock pond edges and creek banks. Droppings near water sources confirm regular use. Any water in open shrub-steppe country will have sharptail tracks in dry conditions.'},
-  },
   'chukar': {
     feeding:{time:'6:30–9:30 AM & 3:30–6:30 PM',desc:'Feeds on steep rocky slopes in morning then retreats to shade by midday. Returns to feed and water in the afternoon.',look:'Scratched soil on open rocky slopes. Small three-toed tracks 1.5 inches in dust. Droppings on prominent rocks and ledges. Listen for the "chuck-chuck-chukar" call at dawn.'},
     bedding:{time:'10:00 AM–3:00 PM',desc:'Roosts in rocky outcrops and rimrock faces midday. Groups huddle in rock crevices.',look:'White droppings on rock faces and ledge crevices. Feathers in rock crevices. Walk slowly on steep rocky hillsides and look for movement at your feet.'},
@@ -3569,7 +3556,7 @@ const ANIMAL_CATEGORIES = {
        {name:".300 Win Mag",rec:"Best Choice",recColor:"#4ade80",desc:"Excellent for moose with 200+ grain premium bullets. Very capable and more common in WA than .338."},
        {name:".30-06 Springfield",rec:"Good Choice",recColor:"#facc15",desc:"Minimum for moose. Use the heaviest premium bullets available (200–220 grain). Shot placement is critical — hit the vitals precisely."},
      ],
-     waRegs:[{rule:"Special Permit Only",detail:"Moose require a special hunt permit in WA. Only a small number are issued annually by lottery."},{rule:"Apply in Spring",detail:"Applications available at fishhunt.dfw.wa.gov during the spring special permit application period (typically April–May)."},{rule:"Region",detail:"Available only in NE Washington (WDFW Regions 1 and 2 near the Idaho/Canada border)."}]},
+     waRegs:[{rule:"Season",detail:"Moose season: October 1 through November 30 (special draw permit only, per eregulations.com/washington). Apply through WDFW spring permit draw."},{rule:"Special Permit Only",detail:"Moose require a special hunt permit in WA. Only a small number are issued annually by lottery."},{rule:"Apply in Spring",detail:"Applications available at fishhunt.dfw.wa.gov during the spring special permit application period (typically April–May)."},{rule:"Region",detail:"Available only in NE Washington (WDFW Regions 1 and 2 near the Idaho/Canada border)."}]},
   ],
   "bear": [
     {id:"black-bear",icon:"🐻",name:"Black Bear",sub:"Statewide — Most Common",color:"#8b5cf6",
@@ -3606,7 +3593,7 @@ const ANIMAL_CATEGORIES = {
        {name:".30-06 Springfield",rec:"Great Choice",recColor:"#4ade80",desc:"Perfectly capable on mountain goats. Many WA goats have been taken with the .30-06."},
        {name:"6.5 Creedmoor",rec:"Great Choice",recColor:"#4ade80",desc:"Excellent for long-range shots in open alpine terrain. Flat trajectory is valuable in the mountains."},
      ],
-     waRegs:[{rule:"Special Permit Only",detail:"Mountain goat is by special permit only in WA. Permits are extremely limited — often just 1–5 per unit."},{rule:"Apply Spring",detail:"Applications at fishhunt.dfw.wa.gov during spring permit period."},{rule:"Physical Fitness",detail:"Not a regulation, but critical: goat hunts require excellent physical fitness and mountain experience. Dangerous terrain."}]},
+     waRegs:[{rule:"Season",detail:"Mountain goat season: September 1 through November 30 (special draw permit only). Apply through WDFW spring permit draw."},{rule:"Special Permit Only",detail:"Mountain goat is by special permit only in WA. Permits are extremely limited — often just 1–5 per unit."},{rule:"Apply Spring",detail:"Applications at fishhunt.dfw.wa.gov during spring permit period."},{rule:"Physical Fitness",detail:"Not a regulation, but critical: goat hunts require excellent physical fitness and mountain experience. Dangerous terrain."}]},
     {id:"bighorn-sheep",icon:"🐏",name:"Bighorn Sheep",sub:"Special Permit Only",color:"#d97706",
      intro:"One of North America's most coveted big game animals. Washington has limited bighorn sheep populations in the eastern Cascades and Blue Mountains. Permits are extremely rare.",
      identification:["Rams have massive curved brown horns","Tan to brown coat with white rump patch","Stocky muscular build","Rams 150–300 lbs"],
@@ -3615,7 +3602,7 @@ const ANIMAL_CATEGORIES = {
      calibers:[
        {name:".300 Win Mag or 6.5 Creedmoor",rec:"Best Choice",recColor:"#4ade80",desc:"Flat-shooting rifles preferred for open terrain where shots can be 200–400 yards. Premium expanding bullets only."},
      ],
-     waRegs:[{rule:"Special Permit Only",detail:"Among the rarest tags in WA — just a few permits issued statewide annually."},{rule:"Apply Spring",detail:"Spring permit application period at fishhunt.dfw.wa.gov."},{rule:"Region",detail:"Limited to specific management units in eastern Cascades and NE WA. Units vary by year."}]},
+     waRegs:[{rule:"Season",detail:"Bighorn sheep season: September 15 through November 15 (special draw permit only, per eregulations.com/washington). Apply through WDFW spring permit draw."},{rule:"Special Permit Only",detail:"Among the rarest tags in WA — just a few permits issued statewide annually."},{rule:"Apply Spring",detail:"Spring permit application period at fishhunt.dfw.wa.gov."},{rule:"Region",detail:"Limited to specific management units in eastern Cascades and NE WA. Units vary by year."}]},
     {id:"pronghorn",icon:"🦌",name:"Pronghorn Antelope",sub:"Eastern WA — Special Permit",color:"#fbbf24",
      intro:"North America's fastest land animal — pronghorn can sustain speeds over 55 mph. Washington has a small but huntable population in the Columbia Basin shrub-steppe of eastern WA. Special permit required. An exciting and unique western hunt.",
      identification:["Both sexes have horns — males much larger with distinctive prong","Tan and white body with white rump patch","Very large eyes for detecting predators at great distance","Bucks 100–130 lbs"],
@@ -3627,7 +3614,7 @@ const ANIMAL_CATEGORIES = {
        {name:".243 Winchester",rec:"Great Choice",recColor:"#4ade80",desc:"Plenty of power for pronghorn at 300 yards or less. Light recoil helps with precision in the field."},
        {name:".300 Win Mag",rec:"Good Choice",recColor:"#facc15",desc:"More than needed but useful if also hunting elk. The extra recoil can cause flinching on small targets at distance."},
      ],
-     waRegs:[{rule:"Special Permit Only",detail:"Pronghorn require a special permit in WA. Tags are issued by lottery — apply annually through WDFW."},{rule:"Apply Spring",detail:"Spring special permit application window at fishhunt.dfw.wa.gov. Apply every year — odds improve with preference points."},{rule:"Region",detail:"Limited to eastern WA GMUs in the Columbia Basin shrub-steppe. Check available units at wdfw.wa.gov."},{rule:"Season",detail:"Typically late August through September — coincides with the rut when bucks are most active."}]},
+     waRegs:[{rule:"Special Permit Only",detail:"Pronghorn require a special permit in WA. Tags are issued by lottery — apply annually through WDFW."},{rule:"Apply Spring",detail:"Spring special permit application window at fishhunt.dfw.wa.gov. Apply every year — odds improve with preference points."},{rule:"Region",detail:"Limited to eastern WA GMUs in the Columbia Basin shrub-steppe. Check available units at wdfw.wa.gov."},{rule:"Season",detail:"Pronghorn season: September through October (special draw permit only). Apply through WDFW spring permit draw."}]},
   ],
   "upland": [
     {id:"turkey",icon:"🦃",name:"Wild Turkey",sub:"Statewide — Spring & Fall",color:"#ea580c",
@@ -3661,16 +3648,8 @@ const ANIMAL_CATEGORIES = {
        {name:"20 or 28 Gauge Shotgun",rec:"Best Choice",recColor:"#4ade80",desc:"#7.5 or #8 shot is standard for grouse. Light loads for these smaller birds."},
        {name:".22 LR Rifle",rec:"Good Choice",recColor:"#facc15",desc:"Legal in WA for grouse. Head shots preserve the meat perfectly. Great for hikers who encounter birds opportunistically."},
      ],
-     waRegs:[{rule:"Season",detail:"Sooty/Blue Grouse: mid-September through December. Ruffed Grouse: mid-September through January."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Sooty Grouse: 3 per day / 9 in possession. Ruffed Grouse: 4 per day / 12 in possession."}]},
-    {id:"sharptail",icon:"🐦",name:"Sharp-tailed Grouse",sub:"Eastern WA — Shrub-steppe",color:"#a16207",
-     intro:"Washington's only native prairie grouse, the sharp-tailed grouse is found in the shrub-steppe and grasslands of eastern WA. A sleek, fast-flying bird that requires a good dog and quick shooting.",
-     identification:["Mottled brown/white pattern with pointed tail feathers (not fan-shaped)","Slightly larger than pheasant hens — about 2 lbs","Fast, direct flight with rapid wingbeats"],
-     huntingMethods:["Walk-up hunting with a pointing dog in grasslands and shrub-steppe","Hunt near food sources: grain fields, rose hips, chokecherries","Early morning when birds are feeding"],
-     behavior:"Form large winter flocks. Display on traditional dancing grounds (leks) in spring. Prefer grasslands and brushy coulees in eastern WA.",
-     calibers:[
-       {name:"12 or 20 Gauge #6 or #7.5 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Standard upland bird load. Full or modified choke. Same setup works for pheasant and chukar."},
-     ],
-     waRegs:[{rule:"Season",detail:"Typically mid-September through December in eastern WA. Season length varies annually."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 3 per day / 9 in possession. Check current WDFW regulations as populations vary."},{rule:"Area",detail:"Limited to specific eastern WA GMUs — Lincoln, Adams, Grant, and Spokane counties have best populations."}]},
+     waRegs:[{rule:"Season",detail:"Forest grouse season (sooty/blue grouse and ruffed grouse): September 15 through January 15 statewide (2025-26 per eregulations.com/washington)."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Sooty Grouse: 3 per day / 9 in possession. Ruffed Grouse: 4 per day / 12 in possession."}]},
+
     {id:"chukar",icon:"🐦",name:"Chukar Partridge",sub:"Eastern WA — Rocky Canyons",color:"#dc2626",
      intro:"The chukar is one of Washington's most physically demanding upland hunts. These birds live on the steepest, rockiest slopes of eastern WA canyons — hunting them requires serious fitness. The reward is delicious table fare and an unforgettable experience.",
      identification:["Round reddish-brown bird with bold black and white barring on flanks","Bright red bill and legs","White face with black mask","About the size of a small chicken"],
@@ -3680,7 +3659,7 @@ const ANIMAL_CATEGORIES = {
        {name:"12 or 20 Gauge #6 or #7.5 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Modified to full choke for the longer shots common when chukar flush down steep slopes."},
        {name:"28 Gauge",rec:"Good Choice",recColor:"#facc15",desc:"Popular with experienced chukar hunters — lighter to carry up steep terrain all day."},
      ],
-     waRegs:[{rule:"Season",detail:"Typically mid-September through January in eastern WA canyon areas."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 8 per day / 24 in possession."},{rule:"Top Areas",detail:"Snake River breaks, Yakima River canyon, Methow Valley, and Grande Ronde River canyon are classic WA chukar spots."}]},
+     waRegs:[{rule:"Season",detail:"Chukar season: October 4 through January 31 in eastern Washington (2025-26 per eregulations.com/washington)."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 8 per day / 24 in possession."},{rule:"Top Areas",detail:"Snake River breaks, Yakima River canyon, Methow Valley, and Grande Ronde River canyon are classic WA chukar spots."}]},
     {id:"hun",icon:"🐦",name:"Hungarian Partridge",sub:"Eastern WA — Agricultural Areas",color:"#78716c",
      intro:"The 'Hun' is a covey bird of eastern WA's wheat and grain country. Smaller and faster than pheasant, they flush in tight coveys and provide exciting shooting across open agricultural landscapes.",
      identification:["Small round grey-brown bird — about 1 lb","Orange-red face, chestnut horseshoe marking on belly","Flush in tight coveys of 8–15 birds","Very fast direct flight"],
@@ -3690,7 +3669,7 @@ const ANIMAL_CATEGORIES = {
        {name:"20 or 28 Gauge #7.5 or #8 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Lighter loads for these smaller birds. Open choke (improved cylinder or modified) recommended — covey flushes are close."},
        {name:"12 Gauge #7.5 Shot",rec:"Good Choice",recColor:"#facc15",desc:"Works fine but heavier than needed for these small birds."},
      ],
-     waRegs:[{rule:"Season",detail:"Typically mid-September through December in eastern WA."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 8 per day / 24 in possession."},{rule:"Co-bag",detail:"Often hunted alongside pheasant and sharp-tailed grouse in the same areas."}]},
+     waRegs:[{rule:"Season",detail:"Gray partridge (Hungarian Partridge) season: October 4 through January 19 in eastern Washington (2025-26 per eregulations.com/washington)."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 8 per day / 24 in possession."},{rule:"Co-bag",detail:"Often hunted alongside pheasant and sharp-tailed grouse in the same areas."}]},
     {id:"quail",icon:"🐦",name:"California Quail",sub:"Eastern WA — Shrubby Areas",color:"#65a30d",
      intro:"The California quail (Valley quail) is Washington's most abundant native quail species, found in brushy coulees, orchards, and shrubby areas of eastern WA. They flush in large coveys and provide exciting fast shooting.",
      identification:["Small round grey bird with distinctive curved head plume","Males have black face with white stripe","Coveys of 20–50+ birds common in fall","Flush low and fast with loud wingbeat noise"],
@@ -3700,7 +3679,7 @@ const ANIMAL_CATEGORIES = {
        {name:"20 or 28 Gauge #7.5 or #8 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Open choke (skeet or improved cylinder) — quail flush close and fast. Light loads preserve meat on these small birds."},
        {name:"12 Gauge #8 Shot",rec:"Good Choice",recColor:"#facc15",desc:"Works well but a lighter gun is easier to swing on fast-flushing coveys."},
      ],
-     waRegs:[{rule:"Season",detail:"Typically mid-September through December in eastern WA."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 10 per day / 30 in possession."},{rule:"Area",detail:"Okanogan, Chelan, Douglas, Grant, and Benton counties have top populations."}]},
+     waRegs:[{rule:"Season",detail:"Quail season (California/Bobwhite): October 18 through January 19 in eastern WA; September 20 through November 30 in western WA (2025-26 per eregulations.com/washington)."},{rule:"License",detail:"WA Hunting License + Upland Bird Validation."},{rule:"Bag Limit",detail:"Typically 10 per day / 30 in possession."},{rule:"Area",detail:"Okanogan, Chelan, Douglas, Grant, and Benton counties have top populations."}]},
     {id:"dove",icon:"🕊️",name:"Mourning Dove",sub:"Eastern WA — Agricultural Areas",color:"#a8a29e",
      intro:"Mourning dove is one of the most popular game birds in North America. In Washington, dove season opens in September — one of the first hunting seasons of the year. Fast-flying and challenging to hit, doves are great practice for wing shooting.",
      identification:["Small slender grey-brown bird with long pointed tail","Gentle cooing call — familiar summer sound","Very fast in flight — can exceed 55 mph","White-tipped tail feathers visible in flight"],
@@ -3719,7 +3698,7 @@ const ANIMAL_CATEGORIES = {
      calibers:[
        {name:"12 or 20 Gauge #8 or #9 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Open choke (skeet) — snipe are small and shots are close-range. The challenge is hitting them, not killing them."},
      ],
-     waRegs:[{rule:"Season",detail:"Typically September 1 through December 31. Check current WDFW regulations."},{rule:"License",detail:"WA Hunting License + Migratory Bird Permit."},{rule:"Bag Limit",detail:"8 per day / 24 in possession."}]},
+     waRegs:[{rule:"Season",detail:"Snipe season: October 11 through January 25 (runs concurrent with duck season 2025-26 per eregulations.com/washington)."},{rule:"License",detail:"WA Hunting License + Migratory Bird Permit."},{rule:"Bag Limit",detail:"8 per day / 24 in possession."}]},
     {id:"sandhill-crane",icon:"🦢",name:"Sandhill Crane",sub:"Eastern WA — Agricultural Areas",color:"#6366f1",
      intro:"Washington recently reopened sandhill crane hunting after a long closure — now with a very limited season in eastern WA. Cranes are large, prehistoric-looking birds and excellent table fare often called 'the ribeye of the sky.'",
      identification:["Very large grey birds — 4-foot wingspan","Distinctive red forehead patch","Fly with neck outstretched (unlike herons which fold their neck)","Loud rattling call audible from miles away"],
@@ -3728,7 +3707,7 @@ const ANIMAL_CATEGORIES = {
      calibers:[
        {name:"12 Gauge Non-Toxic BB, BBB, or T Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Large birds require large non-toxic shot for clean kills. Same setup as Canada geese. Full choke recommended."},
      ],
-     waRegs:[{rule:"Season",detail:"Limited season in specific eastern WA zones — typically mid-October to November. Check current WDFW regulations carefully."},{rule:"License",detail:"WA Hunting License + Special Sandhill Crane Permit (separate lottery). Also need Federal Sandhill Crane permit."},{rule:"Bag Limit",detail:"Very limited — typically 1–3 birds per season depending on the zone. Confirm current limits before hunting."},{rule:"Non-Toxic Shot",detail:"Required. Same federal requirement as all migratory waterfowl."}]},
+     waRegs:[{rule:"Season",detail:"Sandhill crane season: limited special permit season in specific eastern WA zones, typically September through October. Check current WDFW regulations carefully."},{rule:"License",detail:"WA Hunting License + Special Sandhill Crane Permit (separate lottery). Also need Federal Sandhill Crane permit."},{rule:"Bag Limit",detail:"Very limited — typically 1–3 birds per season depending on the zone. Confirm current limits before hunting."},{rule:"Non-Toxic Shot",detail:"Required. Same federal requirement as all migratory waterfowl."}]},
   ],
   "waterfowl": [
     {id:"duck",icon:"🦆",name:"Ducks",sub:"Statewide — Ponds, Rivers, Coast",color:"#0ea5e9",
@@ -3741,7 +3720,7 @@ const ANIMAL_CATEGORIES = {
        {name:"20 Gauge Non-Toxic",rec:"Good Choice",recColor:"#facc15",desc:"Effective with modern non-toxic loads. Use #2 or #3 steel for larger ducks."},
        {name:"Bismuth or Tungsten Shot",rec:"Premium Option",recColor:"#a78bfa",desc:"Patterns like lead but legal for waterfowl. More expensive but dramatically better performance than steel — worth it for serious hunters."},
      ],
-     waRegs:[{rule:"Federal + State License",detail:"Must have both WA Hunting License + WA Waterfowl License + Federal Duck Stamp. All three required."},{rule:"Non-Toxic Shot",detail:"FEDERALLY REQUIRED for all waterfowl. Lead shot is illegal for ducks and geese everywhere. Significant fines."},{rule:"Season",detail:"Generally October through January. Teal early season opens in September."},{rule:"Bag Limit",detail:"Varies by species and zone. Generally 7 ducks per day with species restrictions. Carry and know your limits."}]},
+     waRegs:[{rule:"Federal + State License",detail:"Must have both WA Hunting License + WA Waterfowl License + Federal Duck Stamp. All three required."},{rule:"Non-Toxic Shot",detail:"FEDERALLY REQUIRED for all waterfowl. Lead shot is illegal for ducks and geese everywhere. Significant fines."},{rule:"Season",detail:"Duck season: October 11 through January 25 statewide (2025-26). Special early duck hunt September 20-27."},{rule:"Bag Limit",detail:"Varies by species and zone. Generally 7 ducks per day with species restrictions. Carry and know your limits."}]},
     {id:"teal",icon:"🦆",name:"Teal (Early Season)",sub:"Statewide — September",color:"#06b6d4",
      intro:"Washington offers a special early teal-only season in September before the regular duck season opens. Blue-winged, Green-winged, and Cinnamon teal all pass through WA. Small, fast, and exciting — teal are excellent practice before the big season.",
      identification:["Blue-winged Teal: powder blue wing patch visible in flight","Green-winged Teal: smallest WA duck — very fast","Cinnamon Teal: males have rich cinnamon-red body","All teal fly in tight twisting flocks at high speed"],
@@ -3769,7 +3748,7 @@ const ANIMAL_CATEGORIES = {
      calibers:[
        {name:"12 Gauge Non-Toxic BB or BBB Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Same setup as Canada geese. High-velocity steel or bismuth for clean kills on these tough birds."},
      ],
-     waRegs:[{rule:"Conservation Order",detail:"Special spring conservation season (Light Goose Conservation Order) with very liberal rules — no daily bag limit on snow and Ross's geese."},{rule:"Electronic Calls",detail:"Electronic calls are LEGAL during the spring conservation order (unlike regular season)."},{rule:"Unplugged Shotguns",detail:"Shotguns may be unplugged (more than 3 shells) during the conservation order."},{rule:"Dates",detail:"Typically February 1 through April 30 in eastern WA. Check current WDFW regulations."},{rule:"License",detail:"WA Hunting License + WA Waterfowl License + Federal Duck Stamp required."}]},
+     waRegs:[{rule:"Season",detail:"Snow goose regular season: October through January. Spring light goose conservation order: February 1 through April 30."},{rule:"Conservation Order",detail:"Special spring conservation season (Light Goose Conservation Order) with very liberal rules — no daily bag limit on snow and Ross's geese."},{rule:"Electronic Calls",detail:"Electronic calls are LEGAL during the spring conservation order (unlike regular season)."},{rule:"Unplugged Shotguns",detail:"Shotguns may be unplugged (more than 3 shells) during the conservation order."},{rule:"Dates",detail:"Typically February 1 through April 30 in eastern WA. Check current WDFW regulations."},{rule:"License",detail:"WA Hunting License + WA Waterfowl License + Federal Duck Stamp required."}]},
     {id:"brant",icon:"🪿",name:"Brant",sub:"Western WA — Coastal",color:"#0f766e",
      intro:"Brant are small dark sea geese that migrate along the Pacific Coast and winter in protected bays of western WA. Puget Sound and coastal bays offer excellent brant hunting for those willing to put in the scouting effort.",
      identification:["Small dark goose — much smaller than Canada goose","Black head, neck, and breast with white neck markings","Fly low over water in irregular flocks","Prefer eelgrass beds and salt water"],
@@ -3790,7 +3769,7 @@ const ANIMAL_CATEGORIES = {
        {name:".22 LR Rifle",rec:"Best Choice",recColor:"#4ade80",desc:"The classic rabbit/hare cartridge. Quiet, accurate, affordable, and preserves meat with head shots."},
        {name:"20 Gauge #6 or #7.5 Shot",rec:"Best Choice",recColor:"#4ade80",desc:"Great for jump shooting — quick flushing rabbits are easy to miss with a rifle."},
      ],
-     waRegs:[{rule:"Season",detail:"Cottontail: year-round in most WA areas. Snowshoe Hare: year-round."},{rule:"License",detail:"WA Hunting License + Small Game License."},{rule:"Bag Limit",detail:"Cottontail: 5 per day. Snowshoe Hare: 5 per day."}]},
+     waRegs:[{rule:"Season",detail:"Cottontail rabbit and snowshoe hare season: September 1 through March 15 statewide."},{rule:"License",detail:"WA Hunting License + Small Game License."},{rule:"Bag Limit",detail:"Cottontail: 5 per day. Snowshoe Hare: 5 per day."}]},
     {id:"squirrel",icon:"🐿️",name:"Tree Squirrel",sub:"Forests Statewide",color:"#92400e",
      intro:"Washington has Western Gray Squirrels and Douglas Squirrels (Chickarees). Excellent beginner hunting — develops shooting skills, woodsmanship, and makes excellent stew.",
      identification:["Western Gray Squirrel: large gray squirrel with bushy tail","Douglas Squirrel: small dark brown squirrel, common in conifer forests"],
@@ -3800,7 +3779,7 @@ const ANIMAL_CATEGORIES = {
        {name:".22 LR Rifle",rec:"Best Choice",recColor:"#4ade80",desc:"Perfect squirrel caliber — precise head shots at 30–60 yards. Low cost, fun to shoot."},
        {name:"20 Gauge #6 Shot",rec:"Good Choice",recColor:"#facc15",desc:"For mixed-bag days with birds. More effective for moving squirrels in dense canopy."},
      ],
-     waRegs:[{rule:"Season",detail:"Western Gray Squirrel: Sept 1 – Dec 31. Douglas Squirrel: year-round."},{rule:"License",detail:"WA Hunting License + Small Game License."},{rule:"Bag Limit",detail:"Western Gray Squirrel: 3 per day. Douglas Squirrel: no limit."}]},
+     waRegs:[{rule:"Season",detail:"Western Gray Squirrel: squirrel season September 1 through December 31. Fox Squirrel and Eastern Gray Squirrel (non-native introduced species): open all year."},{rule:"License",detail:"WA Hunting License + Small Game License."},{rule:"Bag Limit",detail:"Western Gray Squirrel: 3 per day. Douglas Squirrel: no limit."}]},
     {id:"bobcat",icon:"🐱",name:"Bobcat",sub:"Statewide",color:"#c2410c",
      intro:"Washington's most common wild cat. Bobcats are secretive and rarely seen but widely distributed across the state. Hunting is done primarily with hounds or predator calling. Their spotted coat makes them a prized trophy.",
      identification:["About twice the size of a domestic cat — 15–35 lbs","Spotted reddish-brown coat with white belly","Short 'bobbed' tail with black tip on top","Tufted ears with small ear tufts"],
@@ -3811,7 +3790,7 @@ const ANIMAL_CATEGORIES = {
        {name:".243 Winchester",rec:"Good Choice",recColor:"#facc15",desc:"More versatile — can be used for deer and other game as well."},
        {name:"12 Gauge #4 Buckshot",rec:"Good Choice",recColor:"#facc15",desc:"For close-range calling setups where bobcats come in tight."},
      ],
-     waRegs:[{rule:"Season",detail:"October 1 through March 15 statewide (2025-26 season). Always verify current dates at wdfw.wa.gov as bobcat seasons can change annually."},{rule:"License",detail:"WA Hunting License + Bobcat Tag required."},{rule:"Quota",detail:"Bobcat has a statewide harvest quota. Check current quota status before hunting."},{rule:"Pelt Tagging",detail:"All harvested bobcats must be registered with WDFW within 5 days. Pelt tag required for export."}]},
+     waRegs:[{rule:"Season",detail:"September 1 through March 15 statewide (2025-26 season per eregulations.com/washington). Always verify current dates at wdfw.wa.gov."},{rule:"License",detail:"WA Hunting License + Bobcat Tag required."},{rule:"Quota",detail:"Bobcat has a statewide harvest quota. Check current quota status before hunting."},{rule:"Pelt Tagging",detail:"All harvested bobcats must be registered with WDFW within 5 days. Pelt tag required for export."}]},
     {id:"coyote",icon:"🐺",name:"Coyote",sub:"Statewide — No Season/Limit",color:"#b45309",
      intro:"Coyotes can be hunted year-round in Washington with no bag limit. A great way to hunt in the off-season and develop skills. Predator calling is exciting — coyotes can come in fast and close.",
      identification:["Medium-sized — 20–50 lbs","Grey to tan coat, bushy tail with black tip","Pointed nose and upright ears","High-pitched yipping howl"],
@@ -3833,7 +3812,7 @@ const SEARCH_RADIUS_MILES = 120;
 // ── FILTER — fully dynamic, derived from SPOTS so always in sync ────────────
 const FILTER_GROUPS = [
   {key:'big-game', label:'🦌 BIG GAME',                ids:['black-tail','mule-deer','whitetail','roosevelt-elk','elk','moose','black-bear','cougar','mountain-goat','bighorn-sheep','pronghorn']},
-  {key:'upland',   label:'🦃 UPLAND BIRDS',            ids:['turkey','pheasant','grouse','sharptail','chukar','hun','quail','dove','snipe','sandhill-crane']},
+  {key:'upland',   label:'🦃 UPLAND BIRDS',            ids:['turkey','pheasant','grouse','chukar','hun','quail','dove','snipe','sandhill-crane']},
   {key:'waterfowl',label:'🦆 WATERFOWL',               ids:['duck','teal','goose','snow-goose','brant']},
   {key:'small',    label:'🐇 SMALL GAME & PREDATORS',  ids:['rabbit','squirrel','bobcat','coyote']},
 ];
@@ -4373,7 +4352,7 @@ function applyFilter(){
   refreshMaps();
 }
 function filterPreset(preset){
-  const birds=['turkey','pheasant','grouse','sharptail','chukar','hun','quail','dove','snipe','sandhill-crane','duck','teal','goose','snow-goose','brant'];
+  const birds=['turkey','pheasant','grouse','chukar','hun','quail','dove','snipe','sandhill-crane','duck','teal','goose','snow-goose','brant'];
   const bigGame=['black-tail','mule-deer','whitetail','roosevelt-elk','elk','moose','black-bear','cougar','mountain-goat','bighorn-sheep','pronghorn'];
   activeFilters.clear();
   FILTER_IDS.forEach(id=>{
@@ -5342,13 +5321,10 @@ function getSeasonStatus(waRegs) {
     windows.push({ start: doy(10,18),end: doy(1,19),  type: 'Firearm Season' });
   }
   // FOREST GROUSE (Blue, Ruffed): Sept 15 – Jan 15
-  if (detail.includes('grouse') && !detail.includes('sharptail') && !detail.includes('sage')) {
+  if (detail.includes('grouse') && !detail.includes('sage')) {
     windows.push({ start: doy(9,15), end: doy(1,15),  type: 'Firearm Season' });
   }
-  // SHARP-TAILED & SAGE GROUSE: Closed statewide per HuntWise
-  if (detail.includes('sharptail') || detail.includes('sharp-tailed') || detail.includes('sage grouse')) {
-    return { open: false, type: 'Closed Season', nextOpen: null };
-  }
+
   // CHUKAR: Eastern WA Oct 4 – Jan 31
   if (detail.includes('chukar')) {
     windows.push({ start: doy(10,4), end: doy(1,31),  type: 'Firearm Season' });
@@ -5405,12 +5381,7 @@ function getSeasonStatus(waRegs) {
     windows.push({ start: doy(9,1),  end: doy(3,15),  type: 'Firearm Season' });
   }
   // COYOTE: year-round, no closed season
-  if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('no bag limit') || detail.includes('coyote')) {
-    return { open: true, type: 'Open Year-Round', nextOpen: null };
-  }
-
-  // COYOTE: year-round, no closed season
-  if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('no bag limit') || detail.includes('coyote')) {
+  if (detail.includes('year-round') || detail.includes('no closed season') || detail.includes('coyote')) {
     return { open: true, type: 'Open Year-Round', nextOpen: null };
   }
 
@@ -5549,7 +5520,6 @@ function openAnimalModal(cat,id){
     'turkey':        './images/animals/turkey.jpg',
     'pheasant':      './images/animals/pheasant.jpg',
     'grouse':        './images/animals/Grouse.jpg',
-    'sharptail':     './images/animals/Sharp-Tailed-Grouse.jpg',
     'chukar':        './images/animals/Chukar.jpg',
     'hun':           './images/animals/hun.jpg',
     'quail':         './images/animals/quail.jpg',
@@ -5731,7 +5701,7 @@ function openDeerModal(animalKey){
     'elk':'deer-elk','roosevelt-elk':'deer-elk','moose':'deer-elk',
     'black-bear':'bear','cougar':'bear',
     'mountain-goat':'mountain','bighorn-sheep':'mountain','pronghorn':'mountain',
-    'turkey':'upland','pheasant':'upland','grouse':'upland','sharptail':'upland',
+    'turkey':'upland','pheasant':'upland','grouse':'upland',
     'chukar':'upland','hun':'upland','quail':'upland','dove':'upland',
     'snipe':'upland','sandhill-crane':'upland',
     'duck':'waterfowl','teal':'waterfowl','goose':'waterfowl',
