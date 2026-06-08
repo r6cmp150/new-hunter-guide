@@ -437,26 +437,17 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
 </section>
 
 <!-- Footer -->
-<footer class="w-full bg-[#172c1d] py-12 px-8" style="position:relative">
-  <div style="display:flex;align-items:center;justify-content:space-between;width:100%">
-    <div>
-      <div class="font-headline text-lg text-[#fec391] italic font-bold">New Hunter's Field Guide</div>
-      <p class="text-xs font-light tracking-wide text-[#fef9eb]">© 2026 All rights reserved.</p>
-    </div>
-    <div style="display:flex;gap:32px;position:absolute;left:50%;transform:translateX(-50%)">
-    <a href="https://wdfw.wa.gov/hunting/regulations" target="_blank" class="text-xs font-light tracking-wide text-[#fef9eb]/60 hover:text-[#fef9eb] transition-opacity">Regulations</a>
-    <a href="#" class="text-xs font-light tracking-wide text-[#fef9eb]/60 hover:text-[#fef9eb] transition-opacity">Other States</a>
-    <a href="#" onclick="event.preventDefault();enterApp('privacy')" class="text-xs font-light tracking-wide text-[#fef9eb]/60 hover:text-[#fef9eb] transition-opacity">Privacy Policy</a>
+<footer style="width:100%;background:#172c1d;padding:40px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px">
+  <div><div style="font-family:'Newsreader',Georgia,serif;font-size:18px;color:#fec391;font-style:italic;font-weight:700">New Hunter's Field Guide</div><p style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.8);margin-top:4px">© 2026 All rights reserved.</p></div>
+  <div style="display:flex;flex-wrap:wrap;gap:24px">
+    <a href="https://wdfw.wa.gov/hunting/regulations" target="_blank" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Regulations</a>
+    <a href="#" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Other States</a>
+    <a href="#" onclick="event.preventDefault();enterApp('privacy')" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Privacy Policy</a>
   </div>
-  <div class="flex gap-4">
-    <button onclick="if(navigator.share){navigator.share({title:'WA Beginners Hunting Guide',text:'A free guide for new hunters in Washington State',url:window.location.href})}else{alert('Share: '+window.location.href)}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[#fef9eb]/20 text-[#fef9eb]/60 hover:border-[#fec391] hover:text-[#fec391] transition-all">
-      <span class="material-symbols-outlined text-sm">share</span>
-    </button>
-    <a href="mailto:cmp150@comcast.net" class="w-10 h-10 flex items-center justify-center rounded-full border border-[#fef9eb]/20 text-[#fef9eb]/60 hover:border-[#fec391] hover:text-[#fec391] transition-all">
-      <span class="material-symbols-outlined text-sm">mail</span>
-    </a>
+  <div style="display:flex;gap:10px">
+    <button onclick="if(navigator.share){navigator.share({title:'WA Beginners Hunting Guide',text:'A free guide for new hunters in Washington State',url:window.location.href})}else{alert('Share: '+window.location.href)}" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(254,249,235,.2);background:transparent;color:rgba(254,249,235,.5);cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:16px">share</span></button>
+    <a href="mailto:cmp150@comcast.net" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(254,249,235,.2);background:transparent;color:rgba(254,249,235,.5);display:flex;align-items:center;justify-content:center;text-decoration:none"><span class="material-symbols-outlined" style="font-size:16px">mail</span></a>
   </div>
-</div>
 </footer>
 
 </div><!-- /#home-page -->
@@ -1779,6 +1770,7 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
   #screen-pack .col-span-4 { grid-column:span 1 !important }
   #screen-pack .col-span-6 { grid-column:span 1 !important }
   #screen-pack .cloth-grid { grid-template-columns:1fr 1fr !important }
+  #screen-pack .cloth-tile { aspect-ratio:unset !important; min-height:auto !important; }
   #screen-pack .harvest-grid { grid-template-columns:1fr !important }
   #screen-pack .firearms-inner { grid-template-columns:1fr !important }
   #screen-pack .multi-grid { grid-template-columns:1fr !important }
@@ -7034,6 +7026,72 @@ function clearSearch(){
   renderBrowse();
   if(browseMap) browseMap.setView([47.4,-120.5],6);
 }
+
+// ── FAK REORDER: run at page load to put Mandatory items first in each section ──
+function reorderFAK() {
+  var sections = document.querySelectorAll('.fak-grid section');
+  sections.forEach(function(section) {
+    var items = Array.from(section.querySelectorAll('.fak-item'));
+    var mandatory = items.filter(function(el) {
+      return el.querySelector('span') && el.querySelector('span').textContent.trim() === 'Mandatory';
+    });
+    var nice = items.filter(function(el) {
+      return el.querySelector('span') && el.querySelector('span').textContent.trim() !== 'Mandatory';
+    });
+    mandatory.concat(nice).forEach(function(el) { section.appendChild(el); });
+  });
+}
+document.addEventListener('DOMContentLoaded', reorderFAK);
+
+// ── STANDARDIZE FOOTERS at runtime ──
+function standardizeFooters() {
+  var standard = document.createElement('template');
+  standard.innerHTML = `  <section style="width:100%;background:#fef9ea;padding:40px 0;display:flex;justify-content:center">
+    <a href="#" onclick="event.preventDefault();enterApp('donate')" style="display:flex;align-items:center;gap:8px;padding:14px 28px;border-radius:999px;font-family:'Work Sans',sans-serif;font-weight:700;font-size:14px;color:#fff;background:#FF6700;text-decoration:none;text-transform:uppercase;letter-spacing:2px;box-shadow:0 4px 16px rgba(255,103,0,.3)">
+      <span>Donate to Support</span>
+      <span class="material-symbols-outlined" style="font-size:20px;font-variation-settings:'FILL' 1">favorite</span>
+    </a>
+  </section>
+  <footer style="width:100%;background:#172c1d;padding:40px 28px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px">
+    <div><div style="font-family:'Newsreader',Georgia,serif;font-size:18px;color:#fec391;font-style:italic;font-weight:700">New Hunter's Field Guide</div><p style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.8);margin-top:4px">© 2026 All rights reserved.</p></div>
+    <div style="display:flex;flex-wrap:wrap;gap:24px">
+      <a href="https://wdfw.wa.gov/hunting/regulations" target="_blank" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Regulations</a>
+      <a href="#" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Other States</a>
+      <a href="#" onclick="event.preventDefault();enterApp('privacy')" style="font-family:'Work Sans',sans-serif;font-size:11px;color:rgba(254,249,235,.5);text-decoration:none">Privacy Policy</a>
+    </div>
+    <div style="display:flex;gap:10px">
+      <button onclick="if(navigator.share){navigator.share({title:'WA Beginners Hunting Guide',text:'A free guide for new hunters in Washington State',url:window.location.href})}else{alert('Share: '+window.location.href)}" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(254,249,235,.2);background:transparent;color:rgba(254,249,235,.5);cursor:pointer;display:flex;align-items:center;justify-content:center"><span class="material-symbols-outlined" style="font-size:16px">share</span></button>
+      <a href="mailto:cmp150@comcast.net" style="width:40px;height:40px;border-radius:50%;border:1px solid rgba(254,249,235,.2);background:transparent;color:rgba(254,249,235,.5);display:flex;align-items:center;justify-content:center;text-decoration:none"><span class="material-symbols-outlined" style="font-size:16px">mail</span></a>
+    </div>
+  </footer>`;
+
+  // For each screen, remove duplicate footers and ensure one standard footer
+  var screens = document.querySelectorAll('.screen');
+  screens.forEach(function(screen) {
+    var footers = screen.querySelectorAll('footer');
+    var sections = screen.querySelectorAll('section');
+    var donateSection = null;
+    sections.forEach(function(s) {
+      if(s.textContent.indexOf('Donate to Support') !== -1) {
+        if(donateSection) { s.remove(); } // remove duplicates
+        else donateSection = s;
+      }
+    });
+    // Remove all footers after the first
+    footers.forEach(function(f, idx) { if(idx > 0) f.remove(); });
+    // Standardize the remaining footer
+    if(footers[0]) {
+      var newFoot = standard.content.querySelector('footer').cloneNode(true);
+      footers[0].parentNode.replaceChild(newFoot, footers[0]);
+    }
+    // Add footer to browse screen if missing
+    if(screen.id === 'screen-browse' && screen.querySelectorAll('footer').length === 0) {
+      var clone = standard.content.cloneNode(true);
+      screen.appendChild(clone);
+    }
+  });
+}
+document.addEventListener('DOMContentLoaded', standardizeFooters);
 </script>
 
 </body>
