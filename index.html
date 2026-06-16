@@ -2621,12 +2621,28 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
 </div><!-- end screen-privacy -->
 
 
-<div class="screen" id="screen-weapon" style="background:#fef9ea;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+<div class="screen" id="screen-weapon" style="background:#fef9ea;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;">
 <style>
   @media(max-width:640px){
     #screen-weapon main { padding:20px 14px 80px !important; }
     #screen-weapon .kyw-tabs { display:grid !important; grid-template-columns:1fr 1fr !important; width:100% !important; }
     #screen-weapon .kyw-tabs button { padding:10px 8px !important; font-size:13px !important; }
+    /* Tab bar wraps on mobile */
+    #screen-weapon div[style*="inline-flex"] { display:flex !important; flex-wrap:wrap !important; width:100% !important; }
+    /* Sub-tab pills wrap */
+    #kyw-weapon > div[style*="flex"][style*="gap"] { flex-wrap:wrap !important; }
+    /* Panels stack vertically */
+    #kyw-weapon [style*="grid-template-columns:1fr 1fr"] { grid-template-columns:1fr !important; }
+    /* Images don't overflow */
+    #screen-weapon img { max-width:100% !important; width:100% !important; }
+    /* Step items don't overflow */
+    #screen-weapon div[style*="display:flex;gap:16px"] { gap:10px !important; }
+    /* gear chips wrap */
+    #screen-weapon div[style*="flex-wrap:wrap"] { max-width:100% !important; }
+    /* Range map full width */
+    #screen-weapon #rangesMap { height:220px !important; }
+    /* Range cards stack */
+    #screen-weapon .fak-grid { grid-template-columns:1fr !important; }
   }
 </style>
 
@@ -4119,7 +4135,7 @@ function showScreen(name){
   document.getElementById('screen-'+name).classList.add('active');
   if(name==='budget'){ hcUpdateTotal(); }
   if(name==='animals'){ buildAnimalGrids(); }
-  if(name==='weapon'){ setKywTab('weapon'); }
+  if(name==='weapon'){ if(typeof setKywTabExtended==='function') setKywTabExtended('need'); else setKywTab('weapon'); }
   const isHome=name==='home';
   const _backBtn = document.getElementById('backBtn');
   if(_backBtn) _backBtn.style.display=isHome?'none':'block';
@@ -7093,6 +7109,639 @@ function standardizeFooters() {
 }
 document.addEventListener('DOMContentLoaded', standardizeFooters);
 </script>
+<script>
+// ═══════════════════════════════════════════════════════════
+//  I NEED A WEAPON — Big Game Feature
+//  Injected via DOM manipulation. Zero HTML structure changes.
+// ═══════════════════════════════════════════════════════════
+(function() {
 
+  // ── CALIBER DATA ──────────────────────────────────────────
+  var CALIBERS = {
+    '243': {
+      name: '.243 Winchester',
+      tagline: 'Light, flat-shooting, and forgiving. The ideal first deer rifle.',
+      recoil: 'Low', recoilColor: '#2d6a4f',
+      range: 'Up to 300 yards',
+      trajectory: 'Flat to 200 yards, moderate drop beyond',
+      terrain: 'Dense timber, close-range big game hunting',
+      limitation: 'Marginal for elk — not recommended beyond 150 yards on large bulls',
+      animals: ['deer','cougar','pronghorn'],
+    },
+    '65creed': {
+      name: '6.5 Creedmoor',
+      tagline: 'The modern all-rounder. Low recoil, flat trajectory, handles everything from deer to elk.',
+      recoil: 'Low-Medium', recoilColor: '#6b8f3e',
+      range: 'Up to 400 yards',
+      trajectory: 'Exceptionally flat — one of the best in class',
+      terrain: 'Versatile — timber and open country both',
+      limitation: 'Growing in popularity — widely available at most major retailers',
+      animals: ['deer','cougar','goat','bighorn','pronghorn'],
+    },
+    '308': {
+      name: '.308 Winchester',
+      tagline: 'The most trusted hunting round in North America. Handles every big game animal on the continent.',
+      recoil: 'Medium', recoilColor: '#b5803a',
+      range: 'Up to 400 yards',
+      trajectory: 'Flat to 250 yards, manageable drop to 400',
+      terrain: 'All terrain — the true all-purpose big game round',
+      limitation: 'Slightly more recoil than 6.5 Creedmoor — noticeable for smaller frames',
+      animals: ['deer','elk','bear','cougar','goat','bighorn'],
+    },
+    '3006': {
+      name: '30-06 Springfield',
+      tagline: 'A century of proven performance. The traditional elk round.',
+      recoil: 'Medium-High', recoilColor: '#c0522a',
+      range: 'Up to 400 yards',
+      trajectory: 'Similar to .308, slightly more energy at distance',
+      terrain: 'Open country and mixed — built for elk country across the West',
+      limitation: 'More recoil than .308 with marginal real-world advantage for most hunting situations',
+      animals: ['deer','elk','moose','bear','goat','bighorn'],
+    },
+    '300wm': {
+      name: '.300 Win Mag',
+      tagline: 'Maximum power for maximum game. When distance and toughness both matter.',
+      recoil: 'High', recoilColor: '#ba1a1a',
+      range: '500+ yards',
+      trajectory: 'Extremely flat at long range',
+      terrain: 'Open country — long shots on elk and mule deer at distance',
+      limitation: 'Significant recoil. Overkill for most deer hunting. Not a beginner-friendly first rifle.',
+      animals: ['elk','moose','bear','goat','bighorn'],
+    }
+  };
+
+  var ANIMALS = [
+    { id:'deer',     name:'Deer',              emoji:'🦌' },
+    { id:'elk',      name:'Elk',               emoji:'🫎' },
+    { id:'moose',    name:'Moose',             emoji:'🫎' },
+    { id:'bear',     name:'Black Bear',        emoji:'🐻' },
+    { id:'cougar',   name:'Cougar',            emoji:'🐆' },
+    { id:'goat',     name:'Mountain Goat',     emoji:'🐐' },
+    { id:'bighorn',  name:'Bighorn Sheep',     emoji:'🐑' },
+    { id:'pronghorn',name:'Pronghorn Antelope',emoji:'🦌' },
+  ];
+
+  var RIFLES = [
+    { name:'Savage Arms Axis II XP', desc:'Complete package with scope included. Excellent accuracy out of the box — one of the best values in hunting rifles.', price:'$350–$450', search:'Savage+Axis+II+XP' },
+    { name:'Ruger American Rifle',   desc:'Legendary Ruger reliability. Smooth trigger, weatherproof stock, available in every major caliber. Hard to go wrong.', price:'$450–$550', search:'Ruger+American+Rifle+bolt+action' },
+    { name:'Winchester XPR',         desc:'MOA accuracy guarantee from the factory. Clean bolt action, comfortable stock, proven in the field across the West.', price:'$500–$650', search:'Winchester+XPR+bolt+action' },
+    { name:'Tikka T3x Lite',         desc:'The smoothest bolt action in this price range. Finnish precision. If you can stretch the budget, this is the one most hunters wish they started with.', price:'$750–$900', search:'Tikka+T3x+Lite+bolt+action' },
+    { name:'Bergara Timber',         desc:'Spanish precision at its finest. The Bergara Timber pairs a hand-selected walnut stock with a premium barrel that delivers sub-MOA accuracy out of the box. This is a rifle you buy once and hand down. The step up from good to exceptional.', price:'$1,100–$1,300', search:'Bergara+Timber+bolt+action' },
+  ];
+
+  var SCOPES = [
+    { name:'Vortex Crossfire II 3-9x40', tier:'Budget Pick', price:'~$180', desc:'The standard beginner recommendation. Excellent glass for the price, waterproof, and dead reliable. Where 90% of new hunters should start.', search:'Vortex+Crossfire+II+3-9x40' },
+    { name:'Vortex Diamondback 3-9x40',  tier:'Mid Range',   price:'~$280', desc:'Noticeably clearer glass than the Crossfire, especially in low light at dawn and dusk when deer are most active.', search:'Vortex+Diamondback+3-9x40' },
+    { name:'Leupold VX-Freedom 3-9x40',  tier:'Best Value',  price:'~$450', desc:'American-made. The gold standard for hunting optics. Buy this once and never buy another scope.', search:'Leupold+VX-Freedom+3-9x40' },
+  ];
+
+  var ANATOMY = [
+    { icon:'🪵', title:'Stock Material', body:'<strong>Synthetic</strong> (plastic/composite) is the right choice for most hunters — waterproof, lighter, and handles rain, snow, and rough field conditions better. <strong>Wood</strong> looks beautiful but heavier which means its tougher to carry but will give you better accuracy.' },
+    { icon:'✋', title:'Stock Type', body:'<strong>Traditional/sporter</strong> is the standard shape — straight comb, pistol grip integrated into the stock. This is what every beginner should use. Thumbhole and adjustable stocks are for experienced shooters dialing in precision.' },
+    { icon:'📏', title:'Barrel Length', body:'<strong>22 inches</strong> is the sweet spot for most hunting. Shorter (18–20") is lighter and easier in dense timber but slightly less accurate at distance. Longer (24–26") gains a little velocity but can be awkward in tight terrain.' },
+    { icon:'⚖️', title:'Barrel Profile', body:'<strong>Sporter/standard</strong> profile is what you want — lighter and balanced for carrying all day. Heavy/varmint barrels are more accurate for bench shooting but add weight you\'ll feel at mile 8 in the backcountry.' },
+    { icon:'🛡️', title:'Recoil Pad', body:'The rubber cushion on the butt of the stock. <strong>Thicker is better for beginners</strong> — it absorbs felt recoil and prevents the flinching that destroys accuracy. If a rifle\'s recoil pad feels hard or thin, aftermarket pads cost $20 and make a real difference.' },
+    { icon:'🏋️', title:'Overall Weight', body:'<strong>7–8 lbs with scope</strong> is ideal. Lighter rifles are easier to carry but kick harder. Heavier rifles are more stable and softer shooting but punish you on long approaches. Find the balance.' },
+    { icon:'📐', title:'Length of Pull', body:'The distance from the trigger to the end of the stock. If it\'s wrong for your body, you can\'t shoot comfortably or accurately. To test: shoulder the rifle — your trigger finger should reach the trigger naturally without stretching or cramping. Most factory rifles are 13.5–14" LOP, which fits average adult frames.' },
+  ];
+
+  var MAG_OPTIONS = [
+    { range:'1–4x', use:'Dense Timber', desc:'Dense timber and brush. Target acquisition speed matters more than zoom at under 75 yards.' },
+    { range:'3–9x', use:'All-Purpose', desc:'The universal standard. Works in timber and open country alike. 90% of hunters never need more.' },
+    { range:'4–12x', use:'Open Country', desc:'Open country mule deer and elk in open basins. Shots out to 400 yards.' },
+    { range:'6–24x+', use:'Long Range', desc:'Precision long-range only. Not a beginner scope. Overkill for most hunting situations.' },
+  ];
+
+  var OBJ_OPTIONS = [
+    { size:'32–40mm', use:'Standard Hunting', desc:'Right for most conditions. Fits lower rings, lighter weight, works well in normal dawn/dusk light.' },
+    { size:'44–50mm', use:'Low-Light Focus', desc:'More light gathering for pre-dawn and post-sunset. Heavier, needs higher rings. Worth it if you consistently hunt the last 30 minutes of legal shooting light.' },
+  ];
+
+  // ── CSS ───────────────────────────────────────────────────
+  var style = document.createElement('style');
+  style.textContent = [
+    '    #kyw-need-weapon { display:none; }',
+    '    .inw-section-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; margin-top:36px; }',
+    '    .inw-section-header span.sq { width:10px; height:10px; background:#944a00; display:inline-block; flex-shrink:0; }',
+    '    .inw-section-header span.lbl { font-family:\'Work Sans\',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#944a00; }',
+    '    .inw-section-header div.line { flex:1; height:1px; background:#e7e2d4; }',
+    '    .inw-anatomy-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:8px; }',
+    '    .inw-anatomy-card { background:#fff; border:1px solid #e7e2d4; border-radius:12px; padding:18px; }',
+    '    .inw-anatomy-card .ico { font-size:22px; margin-bottom:10px; }',
+    '    .inw-anatomy-card h4 { font-family:\'Newsreader\',Georgia,serif; font-size:15px; font-weight:700; color:#172c1d; margin-bottom:6px; }',
+    '    .inw-anatomy-card p { font-family:\'Work Sans\',sans-serif; font-size:12px; color:#737972; line-height:1.65; }',
+    '    .inw-cal-pills { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:24px; }',
+    '    .inw-cal-pill { padding:10px 18px; border-radius:999px; border:1.5px solid #e7e2d4; background:#fff; font-family:\'Work Sans\',sans-serif; font-size:12px; font-weight:700; color:#434843; cursor:pointer; transition:all .15s; white-space:nowrap; }',
+    '    .inw-cal-pill.active { background:#172c1d; color:#fff; border-color:#172c1d; box-shadow:0 2px 8px rgba(23,44,29,.25); }',
+    '    .inw-cal-panels { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:32px; }',
+    '    .inw-animal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }',
+    '    .inw-animal-card { background:#f8f3e4; border:2px solid transparent; border-radius:10px; padding:12px 8px; text-align:center; transition:all .2s; }',
+    '    .inw-animal-card.active { background:#e8f5ee; border-color:#2d6a4f; }',
+    '    .inw-animal-card.inactive { opacity:0.3; filter:grayscale(1); }',
+    '    .inw-animal-card .emo { font-size:24px; display:block; margin-bottom:4px; }',
+    '    .inw-animal-card .nm { font-family:\'Work Sans\',sans-serif; font-size:10px; font-weight:700; color:#172c1d; text-transform:uppercase; letter-spacing:.5px; line-height:1.3; }',
+    '    .inw-round-card { background:#172c1d; border-radius:12px; padding:22px; color:#fef9ea; }',
+    '    .inw-round-card h3 { font-family:\'Newsreader\',Georgia,serif; font-size:22px; font-weight:800; color:#fec391; margin-bottom:4px; }',
+    '    .inw-round-card .tagline { font-family:\'Newsreader\',Georgia,serif; font-size:13px; font-style:italic; color:#a8c5af; margin-bottom:18px; line-height:1.5; }',
+    '    .inw-round-row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; padding:10px 0; border-bottom:1px solid rgba(255,255,255,.08); }',
+    '    .inw-round-row:last-child { border-bottom:none; padding-bottom:0; }',
+    '    .inw-round-row .lbl { font-family:\'Work Sans\',sans-serif; font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:rgba(254,249,234,.5); flex-shrink:0; width:90px; padding-top:2px; }',
+    '    .inw-round-row .val { font-family:\'Work Sans\',sans-serif; font-size:12px; color:#fef9ea; line-height:1.55; text-align:right; }',
+    '    .inw-recoil-badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:10px; font-weight:700; color:#fff; }',
+    '    .inw-rifle-card { background:#fff; border:1px solid #e7e2d4; border-radius:12px; padding:18px 20px; display:block; margin-bottom:10px; cursor:pointer; text-decoration:none; transition:border-color .15s, box-shadow .15s; }',
+    '    .inw-rifle-card .info h4 { font-family:\'Newsreader\',Georgia,serif; font-size:16px; font-weight:700; color:#172c1d; margin-bottom:4px; }',
+    '    .inw-rifle-card .info p { font-family:\'Work Sans\',sans-serif; font-size:12px; color:#737972; line-height:1.55; margin-bottom:6px; }',
+    '    .inw-rifle-card .price { font-family:\'Work Sans\',sans-serif; font-size:11px; font-weight:700; color:#944a00; }',
+    '    .inw-rifle-card:hover { border-color:#172c1d; box-shadow:0 2px 12px rgba(23,44,29,.12); }',
+    '    .inw-scope-cards { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }',
+    '    .inw-scope-card { background:#fff; border:1px solid #e7e2d4; border-radius:12px; padding:18px; display:block; text-decoration:none; cursor:pointer; transition:border-color .15s, box-shadow .15s; }',
+    '    .inw-scope-card .tier { font-family:\'Work Sans\',sans-serif; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#944a00; margin-bottom:6px; }',
+    '    .inw-scope-card h4 { font-family:\'Newsreader\',Georgia,serif; font-size:14px; font-weight:700; color:#172c1d; margin-bottom:6px; line-height:1.3; }',
+    '    .inw-scope-card .price { font-family:\'Work Sans\',sans-serif; font-size:12px; font-weight:700; color:#172c1d; margin-bottom:8px; }',
+    '    .inw-scope-card p { font-family:\'Work Sans\',sans-serif; font-size:11px; color:#737972; line-height:1.6; margin-bottom:10px; }',
+    '    .inw-scope-card:hover { border-color:#172c1d; box-shadow:0 2px 12px rgba(23,44,29,.12); }',
+    '    .inw-mag-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px; }',
+    '    .inw-mag-card { background:#fff; border:1px solid #e7e2d4; border-radius:12px; padding:16px; }',
+    '    .inw-mag-card .range { font-family:\'Newsreader\',Georgia,serif; font-size:22px; font-weight:800; color:#172c1d; margin-bottom:2px; }',
+    '    .inw-mag-card .use { font-family:\'Work Sans\',sans-serif; font-size:9px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#944a00; margin-bottom:8px; }',
+    '    .inw-mag-card p { font-family:\'Work Sans\',sans-serif; font-size:11px; color:#737972; line-height:1.6; }',
+    '    .inw-glass-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:8px; }',
+    '    .inw-glass-card { background:#f8f3e4; border-radius:12px; padding:18px; }',
+    '    .inw-glass-card h4 { font-family:\'Newsreader\',Georgia,serif; font-size:16px; font-weight:700; color:#172c1d; margin-bottom:6px; }',
+    '    .inw-glass-card p { font-family:\'Work Sans\',sans-serif; font-size:12px; color:#737972; line-height:1.65; }',
+    '    @media(max-width:640px){',
+    '      .inw-anatomy-grid { grid-template-columns:1fr !important; }',
+    '      .inw-cal-panels { grid-template-columns:1fr !important; }',
+    '      .inw-animal-grid { grid-template-columns:repeat(3,1fr) !important; }',
+    '      .inw-scope-cards { grid-template-columns:1fr !important; }',
+    '      .inw-mag-grid { grid-template-columns:1fr 1fr !important; }',
+    '      .inw-glass-grid { grid-template-columns:1fr !important; }',
+    '      .inw-rifle-card { display:block; }',
+    '    }',
+    '',
+  ].join('\n');
+    document.head.appendChild(style);
+
+  // ── HELPERS ────────────────────────────────────────────────
+  function secHeader(label) {
+    var d = document.createElement('div');
+    d.className = 'inw-section-header';
+    d.innerHTML = '<span class="sq"></span><span class="lbl">'+label+'</span><div class="line"></div>';
+    return d;
+  }
+
+  function el(tag, attrs, html) {
+    var e = document.createElement(tag);
+    if(attrs) Object.keys(attrs).forEach(function(k){ e.setAttribute(k, attrs[k]); });
+    if(html !== undefined) e.innerHTML = html;
+    return e;
+  }
+
+  // ── BUILD THE PAGE ─────────────────────────────────────────
+  function buildNeedWeapon() {
+    var wrap = document.createElement('div');
+    wrap.id = 'kyw-need-weapon';
+
+    // ── Sub-tab pills ─────────────────────────────────────
+    var subTabBar = document.createElement('div');
+    subTabBar.style.cssText = 'display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px';
+    subTabBar.id = 'inw-sub-tabs';
+
+    ['big-game','small-game','feathers'].forEach(function(id, i) {
+      var labels = ['Big Game', 'Small Game', 'Feathers'];
+      var btn = document.createElement('button');
+      btn.id = 'inw-sub-' + id;
+      btn.textContent = labels[i];
+      btn.style.cssText = 'padding:10px 22px;border-radius:999px;background:' + (i===0 ? '#172c1d' : '#f3eee0') + ';color:' + (i===0 ? '#fff' : '#434843') + ';font-family:\'Work Sans\',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border:none;cursor:pointer;transition:all .15s';
+      btn.onclick = (function(tabId){ return function(){ selectInwSub(tabId); }; })(id);
+      subTabBar.appendChild(btn);
+    });
+    wrap.appendChild(subTabBar);
+
+    // ── Sub panels ────────────────────────────────────────
+    var bigGamePanel = document.createElement('div');
+    bigGamePanel.id = 'inw-panel-big-game';
+
+    var smallGamePanel = document.createElement('div');
+    smallGamePanel.id = 'inw-panel-small-game';
+    smallGamePanel.style.display = 'none';
+    smallGamePanel.innerHTML = '<h2 style="font-family:\'Newsreader\',Georgia,serif;font-size:clamp(32px,7vw,52px);font-weight:800;color:#172c1d;line-height:1;letter-spacing:-1px;margin-bottom:6px">Small Game</h2><p style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-style:italic;color:#944a00;margin-bottom:20px">Coming soon.</p><p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#737972;line-height:1.75">This section is being built. Check back soon for guidance on choosing the right rimfire rifle or shotgun for small game hunting in your state.</p>';
+
+    var feathersPanel = document.createElement('div');
+    feathersPanel.id = 'inw-panel-feathers';
+    feathersPanel.style.display = 'none';
+    feathersPanel.innerHTML = '<h2 style="font-family:\'Newsreader\',Georgia,serif;font-size:clamp(32px,7vw,52px);font-weight:800;color:#172c1d;line-height:1;letter-spacing:-1px;margin-bottom:6px">Feathers</h2><p style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-style:italic;color:#944a00;margin-bottom:20px">Coming soon.</p><p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#737972;line-height:1.75">This section is being built. Check back soon for guidance on choosing the right shotgun for bird and waterfowl hunting in your state.</p>';
+
+    wrap.appendChild(bigGamePanel);
+    wrap.appendChild(smallGamePanel);
+    wrap.appendChild(feathersPanel);
+
+    // Sub-tab switcher
+    window.selectInwSub = function(tabId) {
+      ['big-game','small-game','feathers'].forEach(function(id) {
+        var panel = document.getElementById('inw-panel-' + id);
+        var btn   = document.getElementById('inw-sub-' + id);
+        if(panel) panel.style.display = (id === tabId) ? 'block' : 'none';
+        if(btn) {
+          btn.style.background = (id === tabId) ? '#172c1d' : '#f3eee0';
+          btn.style.color      = (id === tabId) ? '#fff'    : '#434843';
+        }
+      });
+    };
+
+
+
+    // ══════════════════════════════════════════════════════
+    //  BIG GAME PAGE — New layout per wireframe
+    // ══════════════════════════════════════════════════════
+
+    var bg = bigGamePanel;
+
+    function bgSec(label) {
+      var d = document.createElement('div');
+      d.className = 'inw-section-header';
+      d.innerHTML = '<span class="sq"></span><span class="lbl">'+label+'</span><div class="line"></div>';
+      return d;
+    }
+
+    // ── 1. INTRO ──────────────────────────────────────────
+    var hero = el('div', {style:'margin-bottom:28px'});
+    hero.innerHTML = '<h2 style="font-family:\'Newsreader\',Georgia,serif;font-size:clamp(32px,7vw,52px);font-weight:800;color:#172c1d;line-height:1;letter-spacing:-1px;margin-bottom:6px">Big Game</h2>'
+      + '<p style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-style:italic;color:#944a00;margin-bottom:16px">Most hunters start here.</p>'
+      + '<p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#434843;line-height:1.75;margin-bottom:16px">Deer, elk, bear, moose, cougar — these animals require power, range, and precision. The right tool for all of them is the same: a bolt-action rifle.</p>'
+      + '<div style="background:#f8f3e4;border-left:3px solid #944a00;padding:14px 18px;border-radius:0 8px 8px 0"><p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:#172c1d;line-height:1.65"><strong>Why bolt-action?</strong> It\'s reliable, accurate, legal everywhere in the US, and it teaches you the discipline of making your first shot count. Semi-auto and lever-action exist — but bolt-action is what every serious big game hunter starts with.</p></div>';
+    bg.appendChild(hero);
+
+    // ── 2. CHOOSE YOUR CALIBER ────────────────────────────
+    bg.appendChild(bgSec('🎯 Choose Your Caliber'));
+    bg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'Select a caliber to see which big game animals it handles and how it performs in the field.'));
+
+    // Intro text above pills
+    var calIntro = el('div', {style:'background:#f8f3e4;border-radius:12px;padding:16px 18px;margin-bottom:20px'});
+    calIntro.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:#172c1d;line-height:1.75;margin-bottom:10px"><strong>This is about ideal, not just adequate.</strong> Many calibers can kill any animal on this list under the right conditions. That\'s not what this tool shows. The animals highlighted for each caliber are those where that round is genuinely the right tool for the job — matching the animal\'s size, typical hunting distance, and required energy with no compromises.</p>'
+      + '<p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#737972;line-height:1.65">A .243 can kill an elk at close range with perfect shot placement. But it is not the ideal elk cartridge — the margin for error is too small for an animal that can weigh 700 lbs and disappear into timber when wounded. We recommend cartridges a beginner can use confidently, not cartridges that require expert-level execution to work.</p>';
+    bg.appendChild(calIntro);
+
+    // Caliber pills
+    var pills = el('div', {class:'inw-cal-pills'});
+    Object.keys(CALIBERS).forEach(function(key){
+      var btn = el('button', {class:'inw-cal-pill', 'data-cal':key});
+      btn.textContent = CALIBERS[key].name;
+      btn.onclick = function(){ selectCaliber(key); };
+      pills.appendChild(btn);
+    });
+    bg.appendChild(pills);
+
+    // Two-col: animal grid (left) + caliber info (right)
+    var calRow = el('div', {style:'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px'});
+    calRow.id = 'inw-cal-row';
+
+    // Animal grid
+    var animalWrap = el('div',{});
+    animalWrap.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:10px"},'Compatible Animals'));
+    var animalGrid = el('div', {class:'inw-animal-grid', id:'inw-animal-grid'});
+    ANIMALS.forEach(function(a){
+      var card = el('div', {class:'inw-animal-card inactive', 'data-animal':a.id});
+      card.innerHTML = '<span class="emo">'+a.emoji+'</span><span class="nm">'+a.name+'</span>';
+      animalGrid.appendChild(card);
+    });
+    animalWrap.appendChild(animalGrid);
+    calRow.appendChild(animalWrap);
+
+    // Caliber info panel
+    var roundPanel = el('div', {class:'inw-round-card', id:'inw-round-card'});
+    roundPanel.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:rgba(254,249,234,.5);text-align:center;padding:32px 0">Select a caliber</p>';
+    calRow.appendChild(roundPanel);
+    bg.appendChild(calRow);
+
+    // Trajectory graph placeholder
+    var trajWrap = el('div',{style:'background:#fff;border:1px solid #e7e2d4;border-radius:12px;padding:20px;margin-bottom:32px'});
+    trajWrap.id = 'inw-traj-wrap';
+    trajWrap.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#944a00;margin-bottom:14px">Caliber Drop-Off Graph</p>'
+      + '<div id="inw-traj-graph" style="width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center"><p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#b0aba0">Select a caliber to see trajectory</p></div>'
+      + '<div style="display:flex;justify-content:space-between;margin-top:6px;padding:0 4px"><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">100 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">200 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">300 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">400 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">500 yds</span></div>';
+    bg.appendChild(trajWrap);
+
+    // ── 3. RECOMMENDED RIFLES ─────────────────────────────
+    bg.appendChild(bgSec('🏹 Recommended Rifles'));
+    bg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'Each rifle below is available in your selected caliber at Sportsman\'s Warehouse. Links open a current search — buy what\'s in stock.'));
+    RIFLES.forEach(function(r){
+      var card = el('a', {class:'inw-rifle-card inw-sw-link', href:'https://www.sportsmanswarehouse.com/search?q='+r.search, target:'_blank', 'data-search':r.search});
+      card.innerHTML = '<h4 style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-weight:700;color:#172c1d;margin-bottom:4px">'+r.name+'</h4>'
+        + '<p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#737972;line-height:1.55;margin-bottom:6px">'+r.desc+'</p>'
+        + '<span style="font-family:\'Work Sans\',sans-serif;font-size:11px;font-weight:700;color:#944a00">'+r.price+'</span>';
+      bg.appendChild(card);
+    });
+
+    // ── 4. KNOW YOUR RIFLE ────────────────────────────────
+    bg.appendChild(bgSec('🔫 Know Your Rifle — What to Look For'));
+
+    // Two-col: rifle image (left) + first 2 anatomy cards (right)
+    var anatTopRow = el('div',{style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px'});
+    var imgCell = el('div',{style:'background:#f3eee0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center'});
+    imgCell.innerHTML = '<img src="./images/i_need_a_rifle.png" alt="Bolt-action hunting rifle" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;max-height:320px">';
+    anatTopRow.appendChild(imgCell);
+    var anatFirstTwo = el('div',{style:'display:flex;flex-direction:column;gap:14px'});
+    ANATOMY.slice(0,2).forEach(function(a){
+      var c=el('div',{class:'inw-anatomy-card'});
+      c.innerHTML='<h4>'+a.title+'</h4><p>'+a.body+'</p>';
+      anatFirstTwo.appendChild(c);
+    });
+    anatTopRow.appendChild(anatFirstTwo);
+    bg.appendChild(anatTopRow);
+
+    // 2-col grid for remaining anatomy cards
+    var anatGrid = el('div',{class:'inw-anatomy-grid',style:'margin-bottom:14px'});
+    ANATOMY.slice(2).forEach(function(a){
+      var c=el('div',{class:'inw-anatomy-card'});
+      c.innerHTML='<h4>'+a.title+'</h4><p>'+a.body+'</p>';
+      anatGrid.appendChild(c);
+    });
+    // Add Trigger Weight card
+    var trigCard = el('div',{class:'inw-anatomy-card'});
+    trigCard.innerHTML='<h4>Trigger Weight</h4><p>The amount of force needed to fire the rifle. Factory triggers on budget rifles are often heavy (5–8 lbs), which causes trigger pull anticipation — a major accuracy killer. A lighter, crisper trigger (2–4 lbs) makes a real difference. Most mid-range rifles have acceptable triggers; aftermarket upgrades like a Timney or TriggerTech ($100–$200) transform a budget rifle into a precision tool.</p>';
+    anatGrid.appendChild(trigCard);
+    bg.appendChild(anatGrid);
+
+    // ── 5. CHOOSE YOUR SCOPE ─────────────────────────────
+    bg.appendChild(bgSec('🔭 Choose Your Scope'));
+    bg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'A rifle without a scope is not a hunting rifle. The right scope makes the difference between a clean kill and a wounded animal. Here\'s what actually matters.'));
+
+    // Recommended Scopes
+    var scopeRecLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Recommended Scopes');
+    bg.appendChild(scopeRecLabel);
+    var scopeCards = el('div',{class:'inw-scope-cards',style:'margin-bottom:28px'});
+    SCOPES.forEach(function(s){
+      var c=el('a',{class:'inw-scope-card', href:'https://www.sportsmanswarehouse.com/search?q='+s.search, target:'_blank'});
+      c.innerHTML='<div class="tier">'+s.tier+'</div><h4>'+s.name+'</h4><div class="price">'+s.price+'</div><p>'+s.desc+'</p>';
+      scopeCards.appendChild(c);
+    });
+    bg.appendChild(scopeCards);
+
+    // Magnification — 2 col: cards left + scope image right
+    var magLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Magnification');
+    bg.appendChild(magLabel);
+    var magRow = el('div',{style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px'});
+    var magLeft = el('div',{style:'display:flex;flex-direction:column;gap:10px'});
+    MAG_OPTIONS.forEach(function(m){
+      var c=el('div',{class:'inw-mag-card'});
+      c.innerHTML='<div class="range">'+m.range+'</div><div class="use">'+m.use+'</div><p>'+m.desc+'</p>';
+      magLeft.appendChild(c);
+    });
+    magRow.appendChild(magLeft);
+    var scopeImgCell = el('div',{style:'background:#f3eee0;border-radius:12px;display:flex;align-items:center;justify-content:center'});
+    scopeImgCell.innerHTML='<img src="./images/hunting_scope.png" alt="Hunting scope" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block">';
+    magRow.appendChild(scopeImgCell);
+    bg.appendChild(magRow);
+
+    // Objective Lens
+    var objLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Objective Lens Diameter');
+    bg.appendChild(objLabel);
+    var objGrid = el('div',{class:'inw-mag-grid',style:'margin-bottom:20px'});
+    OBJ_OPTIONS.forEach(function(o){
+      var c=el('div',{class:'inw-mag-card'});
+      c.innerHTML='<div class="range">'+o.size+'</div><div class="use">'+o.use+'</div><p>'+o.desc+'</p>';
+      objGrid.appendChild(c);
+    });
+    bg.appendChild(objGrid);
+
+    // Glass Quality
+    var glassLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Glass Quality');
+    bg.appendChild(glassLabel);
+    var glassGrid = el('div',{class:'inw-glass-grid',style:'margin-bottom:32px'});
+    [{title:'Brand Reputation',body:'Vortex, Leupold, Nikon, and Burris have earned trust over decades. No-name Amazon scopes are a gamble. Stick with brands that have a proven track record.'},
+     {title:'Price as a Proxy',body:'Under $100 is gamble territory. $150–$250 is reliable for a first hunting scope. Above $400 the glass quality takes a genuine leap. Above $1,000 is professional territory.'}
+    ].forEach(function(g){
+      var c=el('div',{class:'inw-glass-card'});
+      c.innerHTML='<h4>'+g.title+'</h4><p>'+g.body+'</p>';
+      glassGrid.appendChild(c);
+    });
+    bg.appendChild(glassGrid);
+
+    // ── 6. CHOOSE YOUR SHOULDER STRAP ─────────────────────
+    bg.appendChild(bgSec('🎒 Choose Your Shoulder Strap'));
+    bg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'A rifle sling is not optional — it\'s how you carry your rifle for 8+ miles without destroying your shoulder. The right sling keeps your hands free for glassing, climbing, and navigating while keeping your rifle immediately accessible. Most hunters underestimate this purchase.'));
+
+    // Recommended Straps
+    var strapRecLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Recommended Slings');
+    bg.appendChild(strapRecLabel);
+    var strapCards = el('div',{class:'inw-scope-cards',style:'margin-bottom:28px'});
+    [
+      {tier:'Budget Pick', name:'Uncle Mike\'s Quick Detach Sling', price:'~$20', desc:'No frills, highly functional. Quick-detach swivels let you remove the sling in seconds. Gets the job done for a first rifle without spending real money.', search:'Uncle+Mikes+quick+detach+sling'},
+      {tier:'Mid Range',   name:'Butler Creek Comfort Sling',     price:'~$35', desc:'Wide neoprene padding distributes weight far better than a narrow strap. Adjusts on the fly and fits any rifle with standard swivel studs. A significant comfort upgrade over the budget option for all-day carries.', search:'Butler+Creek+Comfort+Sling'},
+      {tier:'Best Value',  name:'Magpul MS1 Padded Sling',         price:'~$80', desc:'Multi-use patrol sling. Can be used as a single-point or two-point. Padded, adjustable on the fly, and built to last decades. The long-term investment choice.', search:'Magpul+MS1+padded+sling'},
+    ].forEach(function(s){
+      var c=el('a',{class:'inw-scope-card', href:'https://www.sportsmanswarehouse.com/search?q='+s.search, target:'_blank'});
+      c.innerHTML='<div class="tier">'+s.tier+'</div><h4>'+s.name+'</h4><div class="price">'+s.price+'</div><p>'+s.desc+'</p>';
+      strapCards.appendChild(c);
+    });
+    bg.appendChild(strapCards);
+
+    // Know Your Shoulder Strap — 2-col cards
+    var strapKnowLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Know Your Sling');
+    bg.appendChild(strapKnowLabel);
+    var strapGrid = el('div',{class:'inw-glass-grid',style:'margin-bottom:32px'});
+    [
+      {title:'Single-Point vs Two-Point', body:'A two-point sling (attaches at barrel and stock) is what most hunters use — stable carry, easy to swing up for a shot. A single-point sling (attaches at stock only) is faster to shoulder but less stable on long carries. For backcountry hunting, two-point is the right call.'},
+      {title:'Strap Width & Padding',     body:'A 1-inch narrow strap digs into your shoulder after 2 miles. A 2-inch padded strap feels comfortable after 10. If you\'re doing any serious backcountry hunting — and most good hunting spots require a hike — wider and padded is worth every penny.'},
+      {title:'Quick-Detach Swivels',      body:'Push-button swivels let you remove the sling in one second. Essential for shooting from a bench or tight position where the sling causes torque. Standard on most modern slings — look for this feature.'},
+      {title:'Material',                  body:'Nylon is durable and lightweight. Neoprene adds cushioning. Leather is classic but heavy and affected by wet conditions. For wet-weather hunting, nylon or neoprene beats leather every time.'},
+    ].forEach(function(g){
+      var c=el('div',{class:'inw-glass-card'});
+      c.innerHTML='<h4>'+g.title+'</h4><p>'+g.body+'</p>';
+      strapGrid.appendChild(c);
+    });
+    bg.appendChild(strapGrid);
+
+
+    return wrap;
+  }
+
+  // ── CALIBER SELECTION LOGIC ────────────────────────────────
+  // Bullet drop in inches at 100/200/300/400/500 yards (zeroed at 100yds)
+  var TRAJ = {
+    '243':    [0, -2.1, -9.8,  -24.5, -48.2],
+    '65creed':[0, -1.8, -8.2,  -20.1, -38.4],
+    '308':    [0, -2.6, -11.4, -27.8, -53.6],
+    '3006':   [0, -2.3, -10.1, -24.6, -47.1],
+    '300wm':  [0, -1.5, -6.8,  -16.2, -30.4],
+  };
+
+  function drawTrajectory(key) {
+    var graph = document.getElementById('inw-traj-graph');
+    if(!graph) return;
+    var drops = TRAJ[key];
+    if(!drops) return;
+
+    var W = graph.offsetWidth || 400;
+    var H = 130;
+    var padL = 36, padR = 16, padT = 16, padB = 24;
+    var chartW = W - padL - padR;
+    var chartH = H - padT - padB;
+
+    // Scale: max drop is most negative value
+    var maxDrop = Math.abs(Math.min.apply(null, drops));
+    var xStep = chartW / (drops.length - 1);
+
+    // Points: y=0 at top of chart area = 0 drop, increases downward
+    var pts = drops.map(function(d, i) {
+      var x = padL + i * xStep;
+      var y = padT + (Math.abs(d) / maxDrop) * chartH;
+      return [x, y];
+    });
+
+    // Build SVG path
+    var pathD = 'M ' + pts[0][0] + ' ' + pts[0][1];
+    for(var i = 1; i < pts.length; i++) {
+      // Smooth curve
+      var cpx = (pts[i-1][0] + pts[i][0]) / 2;
+      pathD += ' C ' + cpx + ' ' + pts[i-1][1] + ' ' + cpx + ' ' + pts[i][1] + ' ' + pts[i][0] + ' ' + pts[i][1];
+    }
+
+    // Area fill path
+    var areaD = pathD + ' L ' + pts[pts.length-1][0] + ' ' + (padT + chartH) + ' L ' + pts[0][0] + ' ' + (padT + chartH) + ' Z';
+
+    // Y-axis labels (0", halfway, max)
+    var yLabels = [
+      {y: padT,           label: '0"'},
+      {y: padT + chartH/2, label: '-' + Math.round(maxDrop/2) + '"'},
+      {y: padT + chartH,  label: '-' + Math.round(maxDrop) + '"'},
+    ];
+
+    var svg = '<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'
+      // Grid lines
+      + '<line x1="'+padL+'" y1="'+padT+'" x2="'+(W-padR)+'" y2="'+padT+'" stroke="#e7e2d4" stroke-width="1"/>'
+      + '<line x1="'+padL+'" y1="'+(padT+chartH/2)+'" x2="'+(W-padR)+'" y2="'+(padT+chartH/2)+'" stroke="#e7e2d4" stroke-width="1" stroke-dasharray="4,3"/>'
+      + '<line x1="'+padL+'" y1="'+(padT+chartH)+'" x2="'+(W-padR)+'" y2="'+(padT+chartH)+'" stroke="#e7e2d4" stroke-width="1"/>'
+      // Area fill
+      + '<path d="'+areaD+'" fill="rgba(23,44,29,0.07)"/>'
+      // Curve
+      + '<path d="'+pathD+'" fill="none" stroke="#172c1d" stroke-width="2.5" stroke-linecap="round"/>'
+      // Data points
+      + pts.map(function(p, i) {
+          return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#172c1d"/>'
+            + '<text x="'+p[0]+'" y="'+(p[1]-8)+'" text-anchor="middle" font-family="Work Sans,sans-serif" font-size="10" fill="#944a00">'+drops[i]+'"</text>';
+        }).join('')
+      // Y-axis labels
+      + yLabels.map(function(l){
+          return '<text x="'+(padL-4)+'" y="'+(l.y+4)+'" text-anchor="end" font-family="Work Sans,sans-serif" font-size="9" fill="#b0aba0">'+l.label+'</text>';
+        }).join('')
+      // Zero line label
+      + '<text x="'+padL+'" y="'+(padT-4)+'" font-family="Work Sans,sans-serif" font-size="9" fill="#2d6a4f">Zeroed at 100 yds</text>'
+      + '</svg>';
+
+    graph.innerHTML = svg;
+  }
+
+  function selectCaliber(key) {
+    var cal = CALIBERS[key];
+    // Update pills
+    document.querySelectorAll('.inw-cal-pill').forEach(function(p){
+      p.classList.toggle('active', p.dataset.cal === key);
+    });
+    // Update animal grid
+    document.querySelectorAll('#inw-animal-grid .inw-animal-card').forEach(function(card){
+      var id = card.dataset.animal;
+      var match = cal.animals.indexOf(id) !== -1;
+      card.className = 'inw-animal-card ' + (match ? 'active' : 'inactive');
+    });
+    // Update round card
+    var roundCard = document.getElementById('inw-round-card');
+    if(roundCard) {
+      roundCard.innerHTML = '<h3>'+cal.name+'</h3>'
+        + '<p class="tagline">'+cal.tagline+'</p>'
+        + '<div class="inw-round-row"><span class="lbl">Range</span><span class="val">'+cal.range+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Trajectory</span><span class="val">'+cal.trajectory+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Recoil</span><span class="val"><span class="inw-recoil-badge" style="background:'+cal.recoilColor+'">'+cal.recoil+'</span></span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Best Terrain</span><span class="val">'+cal.terrain+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Limitation</span><span class="val" style="color:#f5a788">'+cal.limitation+'</span></div>';
+    }
+    // Update rifle links with caliber in search
+    document.querySelectorAll('.inw-sw-link').forEach(function(a){
+      var search = a.dataset.search;
+      var calName = cal.name.replace('.','').replace(' ','+')+'+';
+      a.href = 'https://www.sportsmanswarehouse.com/search?q='+calName+search;
+    });
+    // Draw trajectory graph
+    drawTrajectory(key);
+  }
+
+  // ── INJECT INTO DOM ────────────────────────────────────────
+  function inject() {
+    var weaponDiv = document.getElementById('kyw-weapon');
+    if(!weaponDiv) return;
+
+    // 1. Add "I Need a Weapon" tab button BEFORE existing tab bar
+    var tabBar = weaponDiv.closest('main') || weaponDiv.parentNode;
+    // Find the tab container (the pill container with kyw-tab-weapon)
+    var tabContainer = document.getElementById('kyw-tab-weapon').parentNode;
+
+    var newBtn = el('button', {
+      id:'kyw-tab-need',
+      style:'padding:10px 22px;border-radius:8px;background:transparent;color:#434843;font-family:\'Work Sans\',sans-serif;font-size:13px;font-weight:600;border:none;cursor:pointer;transition:all .15s;white-space:nowrap'
+    });
+    newBtn.textContent = 'I Need a Weapon';
+    newBtn.onclick = function(){ setKywTabExtended('need'); };
+    // Insert as first button in the tab container
+    if(tabContainer && tabContainer.firstChild) {
+      tabContainer.insertBefore(newBtn, tabContainer.firstChild);
+    } else if(tabContainer) {
+      tabContainer.appendChild(newBtn);
+    }
+
+    // 2. Build and insert the page content after kyw-shoot
+    var shootDiv = document.getElementById('kyw-shoot');
+    var page = buildNeedWeapon();
+    shootDiv.parentNode.insertBefore(page, shootDiv.nextSibling);
+
+    // 3. Extend setKywTab to handle the new tab
+    var _orig = window.setKywTab;
+    window.setKywTab = function(t) {
+      _orig(t);
+      document.getElementById('kyw-need-weapon').style.display = 'none';
+      var needBtn = document.getElementById('kyw-tab-need');
+      if(needBtn){
+        needBtn.style.background = 'transparent';
+        needBtn.style.color = '#434843';
+        needBtn.style.boxShadow = 'none';
+      }
+    };
+
+    window.setKywTabExtended = function(t) {
+      if(t === 'need'){
+        // Hide other panels
+        document.getElementById('kyw-weapon').style.display = 'none';
+        document.getElementById('kyw-shoot').style.display  = 'none';
+        document.getElementById('kyw-need-weapon').style.display = 'block';
+        // Update all buttons
+        ['weapon','shoot'].forEach(function(id){
+          var btn = document.getElementById('kyw-tab-'+id);
+          if(btn){ btn.style.background='transparent'; btn.style.color='#434843'; btn.style.boxShadow='none'; }
+        });
+        var needBtn = document.getElementById('kyw-tab-need');
+        needBtn.style.background = '#061b0e';
+        needBtn.style.color = '#fff';
+        needBtn.style.boxShadow = '0 2px 8px rgba(6,27,14,.25)';
+      } else {
+        setKywTab(t);
+        document.getElementById('kyw-need-weapon').style.display = 'none';
+      }
+    };
+
+    // Wire existing tabs through extended handler
+    document.getElementById('kyw-tab-weapon').onclick = function(){ setKywTabExtended('weapon'); };
+    document.getElementById('kyw-tab-shoot').onclick  = function(){ setKywTabExtended('shoot'); };
+  }
+
+  // Run after DOM ready
+  // Wait for everything including setKywTab to be defined
+  window.addEventListener('load', inject);
+
+})();
+</script>
 </body>
 </html>
