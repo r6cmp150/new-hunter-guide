@@ -7117,6 +7117,117 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
 (function() {
 
   // ── CALIBER DATA ──────────────────────────────────────────
+  // ════════════════════════════════════════════════════════
+  //  SMALL GAME & PREDATOR DATA
+  // ════════════════════════════════════════════════════════
+  var SG_CALIBERS = {
+    '22lr': {
+      name: '.22 Long Rifle',
+      tagline: 'The classic small game round. Quiet, cheap to shoot, and precise enough for headshots on squirrel.',
+      recoil: 'Minimal', recoilColor: '#2d6a4f',
+      range: 'Up to 75 yards',
+      trajectory: 'Significant drop past 75 yards — close range only',
+      terrain: 'Timber and brush, squirrel in trees, rabbit at short range',
+      limitation: 'Not enough energy or range for coyote or bobcat beyond very close encounters',
+      animals: ['squirrel','rabbit'],
+      rifleType: 'rimfire',
+    },
+    '22mag': {
+      name: '.22 WMR (Magnum)',
+      tagline: 'A meaningful step up from .22 LR. More energy and range without jumping to a centerfire round.',
+      recoil: 'Low', recoilColor: '#6b8f3e',
+      range: 'Up to 125 yards',
+      trajectory: 'Flatter than .22 LR, noticeable drop past 125 yards',
+      terrain: 'Open fields and timber edges, good for rabbit at longer range',
+      limitation: 'Still underpowered for coyote at typical calling distances',
+      animals: ['squirrel','rabbit'],
+      rifleType: 'rimfire',
+    },
+    '17hmr': {
+      name: '.17 HMR',
+      tagline: 'Extremely flat-shooting rimfire. A favorite for precision on small targets at extended range.',
+      recoil: 'Minimal', recoilColor: '#2d6a4f',
+      range: 'Up to 150 yards',
+      trajectory: 'Exceptionally flat for a rimfire — easiest to judge holdover',
+      terrain: 'Open country, fields, and farmland where longer shots on squirrel or rabbit are common',
+      limitation: 'Light bullet loses energy fast in wind — and still not enough for predator-size game',
+      animals: ['squirrel','rabbit'],
+      rifleType: 'rimfire',
+    },
+    '223': {
+      name: '.223 Remington',
+      tagline: 'The standard predator round. Enough range and energy for coyote and bobcat at realistic calling distances.',
+      recoil: 'Medium', recoilColor: '#b5803a',
+      range: 'Up to 300 yards',
+      trajectory: 'Flat to 200 yards, manageable drop to 300',
+      terrain: 'Open country and field edges — built for calling in predators at distance',
+      limitation: 'Overkill and meat-destroying for squirrel and rabbit at close range',
+      animals: ['coyote','bobcat'],
+      rifleType: 'predator',
+    },
+    '22250': {
+      name: '.22-250 Remington',
+      tagline: 'A flat-shooting, high-velocity round built for predators at long range.',
+      recoil: 'Medium', recoilColor: '#c0522a',
+      range: 'Up to 400 yards',
+      trajectory: 'Extremely flat — one of the fastest commercial cartridges',
+      terrain: 'Wide open terrain, agricultural fields, long-range coyote calling setups',
+      limitation: 'Significant overkill for anything smaller than coyote — not a small game round',
+      animals: ['coyote','bobcat'],
+      rifleType: 'predator',
+    },
+  };
+
+  var SG_ANIMALS = [
+    { id:'squirrel', name:'Squirrel',      emoji:'🐿️' },
+    { id:'rabbit',   name:'Rabbit',        emoji:'🐇' },
+    { id:'coyote',   name:'Coyote',        emoji:'🐺' },
+    { id:'bobcat',   name:'Bobcat',        emoji:'🐆' },
+  ];
+
+  var SG_RIFLES_RIMFIRE = [
+    { name:'Ruger 10/22 Carbine', desc:'The best-selling .22 rifle in America for good reason. Reliable, accurate, and endlessly customizable. The standard first semi-auto rimfire.', price:'$300–$400', search:'Ruger+10%2F22+Carbine+Semi-Automatic' },
+    { name:'Savage A22',          desc:'Smooth blowback action with surprising accuracy for the price. A genuine value option that punches above its weight.', price:'$280–$350', search:'Savage+A22+Semi-Automatic+rifle' },
+    { name:'Browning SA-22',      desc:'A takedown design with a beautiful walnut stock. Splits in half for easy transport — a favorite for hunters who hike into squirrel woods.', price:'$600–$750', search:'Browning+SA-22+Semi-Automatic+rifle' },
+    { name:'Ruger 10/22 Takedown',desc:'Same trusted 10/22 action in a takedown format. Disassembles in seconds, fits in a backpack — ideal if you\'re combining small game hunting with a longer hike.', price:'$400–$500', search:'Ruger+10%2F22+Takedown+Semi-Automatic' },
+    { name:'CZ 457 American', desc:'If you\'d rather trade fast follow-up shots for the best possible accuracy, this bolt-action is the one experienced squirrel hunters reach for. A walnut stock and a barrel that consistently outshoots semi-autos at the range — the precision choice on this list.', price:'$500–$600', search:'CZ+457+American+Bolt+Action' },
+  ];
+
+  var SG_RIFLES_PREDATOR = [
+    { name:'Ruger Mini-14 Ranch Rifle', desc:'A traditional wood or synthetic-stocked semi-auto with no AR-style features — legal in every state with no exceptions. Reliable, easy to carry, and a proven choice when a second coyote shows up fast.', price:'$1,000–$1,300', search:'Ruger+Mini-14+Ranch+Rifle+Semi-Automatic+223' },
+    { name:'Browning BAR MK3', desc:'A sporter-stocked semi-auto built for hunters, not tactical shooters. Smooth cycling and genuinely accurate — the closest thing to a traditional hunting rifle that still gives you a fast second shot.', price:'$1,200–$1,400', search:'Browning+BAR+MK3+Semi-Automatic+223' },
+    { name:'Ruger American Predator', desc:'The most capable budget bolt-action in this caliber. Most hunters calling predators actually prefer bolt-action here — a single well-placed shot is the norm, and this rifle\'s adjustable trigger and threaded barrel deliver real accuracy for the price.', price:'$450–$550', search:'Ruger+American+Predator+Bolt+Action+223' },
+    { name:'Savage 110 Apex Hunter XP', desc:'Ships with a Vortex Crossfire II scope already mounted and bore-sighted — genuinely ready to hunt out of the box. The AccuTrigger is one of the best factory triggers at this price point, which matters more than action type for precise predator shots.', price:'$550–$650', search:'Savage+110+Apex+Hunter+XP+Bolt+Action+223' },
+    { name:'Tikka T3x Lite', desc:'A premium step up in bolt-action form. The smoothest action in this price range with genuine sub-MOA accuracy — the rifle serious predator hunters reach for once they\'ve outgrown the budget end of the lineup.', price:'$750–$900', search:'Tikka+T3x+Lite+Bolt+Action+223' },
+  ];
+
+  var SG_SCOPES = [
+    { name:'Simmons Pro Rimfire 4x32mm TRUPLEX', tier:'Budget Pick', price:'~$60', desc:'Purpose-built for rimfire ballistics with a simple, fast-acquiring TRUPLEX reticle. Inexpensive but genuinely matched to .22 LR and .22 WMR trajectories — a smart beginner pairing.', search:'Simmons+Pro+Rimfire+4x32+TRUPLEX' },
+    { name:'Vortex Crossfire II 2-7x32', tier:'Mid Range', price:'~$150', desc:'The same trusted Vortex reliability as our big game pick, scaled down for rimfire and predator work at moderate range.', search:'Vortex+Crossfire+II+2-7x32' },
+    { name:'Leupold VX-Freedom 3-9x40 Rimfire', tier:'Best Value', price:'~$280', desc:'American-made glass with a rimfire-specific reticle calibrated for .22 LR drop. Built to last decades.', search:'Leupold+VX-Freedom+Rimfire' },
+  ];
+
+  var SG_MAG_OPTIONS = [
+    { range:'2–7x', use:'Close Brush', desc:'Squirrel in trees and rabbit in thick cover at under 50 yards. Wide field of view to track movement.' },
+    { range:'3–9x', use:'All-Purpose Small Game', desc:'The standard for mixed terrain — works for squirrel, rabbit, and closer predator encounters alike.' },
+    { range:'4–12x', use:'Open Field Predator', desc:'Coyote and bobcat calling setups in open country. Precision at 200–300 yards on a smaller target.' },
+    { range:'6–18x+', use:'Long Range Predator', desc:'Dedicated predator hunters working open agricultural land at 300+ yards. Not needed for small game.' },
+  ];
+
+  var SG_OBJ_OPTIONS = [
+    { size:'28–32mm', use:'Lightweight Carry', desc:'Keeps the rifle light and well-balanced — ideal since most small game rifles are already lightweight by design.' },
+    { size:'40–44mm', use:'Low-Light Predator', desc:'Coyotes are most active at dawn, dusk, and night. More light gathering helps when calling at the edges of legal shooting hours.' },
+  ];
+
+  var SG_ANATOMY = [
+    { title:'Action Type', body:'<strong>Semi-auto</strong> gives you a fast follow-up shot when a squirrel ducks behind a branch or a rabbit breaks for cover. <strong>Bolt-action</strong> trades that speed for a simpler, often more accurate platform — the right call if you mostly take a single deliberate shot, especially on predators called in from a stand. Neither is wrong; pick based on how you actually hunt.' },
+    { title:'Barrel Length', body:'<strong>18–20 inches</strong> is standard and ideal. Longer barrels add velocity but most rimfire rounds don\'t benefit enough to justify the extra weight and length in brush or timber.' },
+    { title:'Magazine Capacity', body:'10-round rotary or box magazines are standard and plenty for small game. Larger capacity drums exist but add bulk without real benefit for hunting — they\'re built more for the range than the field.' },
+    { title:'Stock Material', body:'<strong>Synthetic</strong> keeps the rifle light for carrying through brush all day. <strong>Wood</strong> looks classic and many small game hunters prefer it since these rifles are light enough that the added weight is barely noticeable.' },
+    { title:'Sight Options', body:'Many rimfire rifles ship with simple iron sights. Fine for close squirrel work, but a scope earns its place fast once you\'re taking precise headshots or stretching range on rabbit and predators.' },
+    { title:'Trigger Weight', body:'Stock triggers on budget rifles — semi-auto or bolt — are often gritty and heavy (5–7 lbs). Since precision shot placement is the whole point of this category, a lighter, crisper trigger (3–4 lbs) makes a real difference. Aftermarket and adjustable factory triggers are widely available across both action types.' },
+  ];
+
   var CALIBERS = {
     '243': {
       name: '.243 Winchester',
@@ -7220,7 +7331,7 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
   // ── CSS ───────────────────────────────────────────────────
   var style = document.createElement('style');
   style.textContent = [
-    '    #kyw-need-weapon { display:none; }',
+    '    #kyw-need-weapon { display:none; max-width:100%; overflow-x:hidden; box-sizing:border-box; }',
     '    .inw-section-header { display:flex; align-items:center; gap:10px; margin-bottom:20px; margin-top:36px; }',
     '    .inw-section-header span.sq { width:10px; height:10px; background:#944a00; display:inline-block; flex-shrink:0; }',
     '    .inw-section-header span.lbl { font-family:\'Work Sans\',sans-serif; font-size:10px; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:#944a00; }',
@@ -7277,6 +7388,12 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     '      .inw-mag-grid { grid-template-columns:1fr 1fr !important; }',
     '      .inw-glass-grid { grid-template-columns:1fr !important; }',
     '      .inw-rifle-card { display:block; }',
+    '      .inw-cal-pills { flex-wrap:wrap !important; }',
+    '      #inw-cal-row, #sg-cal-row { grid-template-columns:1fr !important; }',
+    '      #inw-anat-top-row, #sg-anat-top-row, #inw-mag-row { grid-template-columns:1fr !important; }',
+    '      .inw-round-card { padding:18px !important; }',
+    '      .inw-round-row { flex-direction:column !important; align-items:flex-start !important; gap:2px !important; }',
+    '      .inw-round-row .val { text-align:left !important; }',
     '    }',
     '',
   ].join('\n');
@@ -7325,8 +7442,7 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     var smallGamePanel = document.createElement('div');
     smallGamePanel.id = 'inw-panel-small-game';
     smallGamePanel.style.display = 'none';
-    smallGamePanel.innerHTML = '<h2 style="font-family:\'Newsreader\',Georgia,serif;font-size:clamp(32px,7vw,52px);font-weight:800;color:#172c1d;line-height:1;letter-spacing:-1px;margin-bottom:6px">Small Game</h2><p style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-style:italic;color:#944a00;margin-bottom:20px">Coming soon.</p><p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#737972;line-height:1.75">This section is being built. Check back soon for guidance on choosing the right rimfire rifle or shotgun for small game hunting in your state.</p>';
-
+    
     var feathersPanel = document.createElement('div');
     feathersPanel.id = 'inw-panel-feathers';
     feathersPanel.style.display = 'none';
@@ -7394,7 +7510,7 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     bg.appendChild(pills);
 
     // Two-col: animal grid (left) + caliber info (right)
-    var calRow = el('div', {style:'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px'});
+    var calRow = el('div', {id:'inw-cal-row', style:'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px'});
     calRow.id = 'inw-cal-row';
 
     // Animal grid
@@ -7439,7 +7555,7 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     bg.appendChild(bgSec('🔫 Know Your Rifle — What to Look For'));
 
     // Two-col: rifle image (left) + first 2 anatomy cards (right)
-    var anatTopRow = el('div',{style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px'});
+    var anatTopRow = el('div',{id:'inw-anat-top-row', style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px'});
     var imgCell = el('div',{style:'background:#f3eee0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center'});
     imgCell.innerHTML = '<img src="./images/i_need_a_rifle.png" alt="Bolt-action hunting rifle" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;max-height:320px">';
     anatTopRow.appendChild(imgCell);
@@ -7484,7 +7600,7 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     // Magnification — 2 col: cards left + scope image right
     var magLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Magnification');
     bg.appendChild(magLabel);
-    var magRow = el('div',{style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px'});
+    var magRow = el('div',{id:'inw-mag-row', style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px'});
     var magLeft = el('div',{style:'display:flex;flex-direction:column;gap:10px'});
     MAG_OPTIONS.forEach(function(m){
       var c=el('div',{class:'inw-mag-card'});
@@ -7556,6 +7672,167 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
       strapGrid.appendChild(c);
     });
     bg.appendChild(strapGrid);
+
+
+    // ══════════════════════════════════════════════════════
+    //  SMALL GAME & PREDATOR PAGE
+    // ══════════════════════════════════════════════════════
+    var sg = smallGamePanel;
+
+    function sgSec(label) {
+      var d = document.createElement('div');
+      d.className = 'inw-section-header';
+      d.innerHTML = '<span class="sq"></span><span class="lbl">'+label+'</span><div class="line"></div>';
+      return d;
+    }
+
+    // ── 1. INTRO ──────────────────────────────────────────
+    var sgHero = el('div', {style:'margin-bottom:28px'});
+    sgHero.innerHTML = '<h2 style="font-family:\'Newsreader\',Georgia,serif;font-size:clamp(32px,7vw,52px);font-weight:800;color:#172c1d;line-height:1;letter-spacing:-1px;margin-bottom:6px">Small Game &amp; Predator</h2>'
+      + '<p style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-style:italic;color:#944a00;margin-bottom:16px">One category, two very different jobs.</p>'
+      + '<p style="font-family:\'Work Sans\',sans-serif;font-size:14px;color:#434843;line-height:1.75;margin-bottom:16px">Squirrel and rabbit call for a quiet, precise rimfire rifle at close range. Coyote and bobcat call for more range and more energy than a .22 can deliver. Both actions have a real place here — semi-auto gives you a fast follow-up shot on quick-moving game, while bolt-action rewards the slower, more deliberate shot most predator hunters actually take. Which caliber and action you pick depends entirely on what you\'re after.</p>'
+      + '<div style="background:#f8f3e4;border-left:3px solid #944a00;padding:14px 18px;border-radius:0 8px 8px 0"><p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:#172c1d;line-height:1.65"><strong>Semi-auto or bolt-action?</strong> On squirrel and rabbit, a fast follow-up shot matters — a squirrel that ducks behind a branch or a rabbit that breaks left gives you almost no time to recover, which favors semi-auto. On coyote and bobcat, most experienced hunters actually prefer bolt-action — a single well-placed shot from a steady rest is the norm, and bolt guns are generally more accurate and more affordable in these calibers. Both recommendation lists below include both action types so you can pick what fits how you actually hunt.</p></div>';
+    sg.appendChild(sgHero);
+
+    // ── 2. CHOOSE YOUR CALIBER ────────────────────────────
+    sg.appendChild(sgSec('🎯 Choose Your Caliber'));
+
+    var sgCalIntro = el('div', {style:'background:#f8f3e4;border-radius:12px;padding:16px 18px;margin-bottom:20px'});
+    sgCalIntro.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:#172c1d;line-height:1.75;margin-bottom:10px"><strong>This is about ideal, not just adequate.</strong> A .22 LR can technically reach a coyote at close range, but it won\'t deliver a clean, ethical kill at the distance coyotes are typically called in. The pairings below reflect what experienced hunters actually load for each animal.</p>'
+      + '<p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#737972;line-height:1.65">Small game (squirrel, rabbit) and predator (coyote, bobcat) are different jobs requiring different rounds. There is no single caliber that is ideal for both ends of this category.</p>';
+    sg.appendChild(sgCalIntro);
+
+    var sgPills = el('div', {class:'inw-cal-pills'});
+    Object.keys(SG_CALIBERS).forEach(function(key){
+      var btn = el('button', {class:'inw-cal-pill sg-pill', 'data-cal':key});
+      btn.textContent = SG_CALIBERS[key].name;
+      btn.onclick = function(){ selectSgCaliber(key); };
+      sgPills.appendChild(btn);
+    });
+    sg.appendChild(sgPills);
+
+    var sgCalRow = el('div', {id:'sg-cal-row', style:'display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px'});
+
+    var sgAnimalWrap = el('div',{});
+    sgAnimalWrap.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:10px"},'Compatible Animals'));
+    var sgAnimalGrid = el('div', {class:'inw-animal-grid', id:'sg-animal-grid', style:'grid-template-columns:repeat(2,1fr)'});
+    SG_ANIMALS.forEach(function(a){
+      var card = el('div', {class:'inw-animal-card inactive', 'data-animal':a.id});
+      card.innerHTML = '<span class="emo">'+a.emoji+'</span><span class="nm">'+a.name+'</span>';
+      sgAnimalGrid.appendChild(card);
+    });
+    sgAnimalWrap.appendChild(sgAnimalGrid);
+    sgCalRow.appendChild(sgAnimalWrap);
+
+    var sgRoundPanel = el('div', {class:'inw-round-card', id:'sg-round-card'});
+    sgRoundPanel.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:13px;color:rgba(254,249,234,.5);text-align:center;padding:32px 0">Select a caliber</p>';
+    sgCalRow.appendChild(sgRoundPanel);
+    sg.appendChild(sgCalRow);
+
+    var sgTrajWrap = el('div',{style:'background:#fff;border:1px solid #e7e2d4;border-radius:12px;padding:20px;margin-bottom:32px'});
+    sgTrajWrap.innerHTML = '<p style="font-family:\'Work Sans\',sans-serif;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#944a00;margin-bottom:14px">Caliber Drop-Off Graph</p>'
+      + '<div id="sg-traj-graph" style="width:100%;height:120px;display:flex;align-items:flex-end;justify-content:center"><p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#b0aba0">Select a caliber to see trajectory</p></div>'
+      + '<div style="display:flex;justify-content:space-between;margin-top:6px;padding:0 4px"><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">25 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">50 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">75 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">100 yds</span><span style="font-family:\'Work Sans\',sans-serif;font-size:10px;color:#b0aba0">125 yds</span></div>';
+    sg.appendChild(sgTrajWrap);
+
+    // ── 3. RECOMMENDED RIFLES ─────────────────────────────
+    sg.appendChild(sgSec('🏹 Recommended Rifles'));
+    var sgRifleNote = el('p',{id:'sg-rifle-note', style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'Select a caliber above to see matching rifle recommendations.');
+    sg.appendChild(sgRifleNote);
+    var sgRifleList = el('div', {id:'sg-rifle-list'});
+    sg.appendChild(sgRifleList);
+
+    // ── 4. KNOW YOUR RIFLE ────────────────────────────────
+    sg.appendChild(sgSec('🔫 Know Your Rifle — What to Look For'));
+
+    var sgAnatTopRow = el('div',{id:'sg-anat-top-row', style:'display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px'});
+    var sgImgCell = el('div',{style:'background:#f3eee0;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center'});
+    sgImgCell.innerHTML = '<img src="./images/i_need_a_small_rifle.png" alt="Small game and predator rifle" style="width:100%;height:100%;object-fit:cover;border-radius:12px;display:block;max-height:320px">';
+    sgAnatTopRow.appendChild(sgImgCell);
+    var sgAnatFirstTwo = el('div',{style:'display:flex;flex-direction:column;gap:14px'});
+    SG_ANATOMY.slice(0,2).forEach(function(a){
+      var c=el('div',{class:'inw-anatomy-card'});
+      c.innerHTML='<h4>'+a.title+'</h4><p>'+a.body+'</p>';
+      sgAnatFirstTwo.appendChild(c);
+    });
+    sgAnatTopRow.appendChild(sgAnatFirstTwo);
+    sg.appendChild(sgAnatTopRow);
+
+    var sgAnatGrid = el('div',{class:'inw-anatomy-grid',style:'margin-bottom:14px'});
+    SG_ANATOMY.slice(2).forEach(function(a){
+      var c=el('div',{class:'inw-anatomy-card'});
+      c.innerHTML='<h4>'+a.title+'</h4><p>'+a.body+'</p>';
+      sgAnatGrid.appendChild(c);
+    });
+    sg.appendChild(sgAnatGrid);
+
+    // ── 5. CHOOSE YOUR SCOPE ─────────────────────────────
+    sg.appendChild(sgSec('🔭 Choose Your Scope'));
+    sg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'Rimfire ballistics drop fast, so a scope matched to your caliber matters more here than it does for centerfire big game rifles.'));
+
+    var sgScopeRecLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Recommended Scopes');
+    sg.appendChild(sgScopeRecLabel);
+    var sgScopeCards = el('div',{class:'inw-scope-cards',style:'margin-bottom:28px'});
+    SG_SCOPES.forEach(function(s){
+      var c=el('a',{class:'inw-scope-card', href:'https://www.sportsmanswarehouse.com/search?q='+s.search, target:'_blank'});
+      c.innerHTML='<div class="tier">'+s.tier+'</div><h4>'+s.name+'</h4><div class="price">'+s.price+'</div><p>'+s.desc+'</p>';
+      sgScopeCards.appendChild(c);
+    });
+    sg.appendChild(sgScopeCards);
+
+    var sgMagLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Magnification');
+    sg.appendChild(sgMagLabel);
+    var sgMagGrid = el('div',{class:'inw-mag-grid',style:'margin-bottom:20px'});
+    SG_MAG_OPTIONS.forEach(function(m){
+      var c=el('div',{class:'inw-mag-card'});
+      c.innerHTML='<div class="range">'+m.range+'</div><div class="use">'+m.use+'</div><p>'+m.desc+'</p>';
+      sgMagGrid.appendChild(c);
+    });
+    sg.appendChild(sgMagGrid);
+
+    var sgObjLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Objective Lens Diameter');
+    sg.appendChild(sgObjLabel);
+    var sgObjGrid = el('div',{class:'inw-mag-grid',style:'margin-bottom:32px'});
+    SG_OBJ_OPTIONS.forEach(function(o){
+      var c=el('div',{class:'inw-mag-card'});
+      c.innerHTML='<div class="range">'+o.size+'</div><div class="use">'+o.use+'</div><p>'+o.desc+'</p>';
+      sgObjGrid.appendChild(c);
+    });
+    sg.appendChild(sgObjGrid);
+
+    // ── 6. CHOOSE YOUR SHOULDER STRAP ─────────────────────
+    sg.appendChild(sgSec('🎒 Choose Your Shoulder Strap'));
+    sg.appendChild(el('p',{style:"font-family:'Work Sans',sans-serif;font-size:13px;color:#737972;line-height:1.65;margin-bottom:16px"},
+      'Small game rifles are light, so the sling matters less for load-bearing than it does for a heavy big game rifle. What matters most here is quick, quiet handling — you\'re often walking slowly through brush and need the rifle ready fast.'));
+
+    var sgStrapRecLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Recommended Slings');
+    sg.appendChild(sgStrapRecLabel);
+    var sgStrapCards = el('div',{class:'inw-scope-cards',style:'margin-bottom:28px'});
+    [
+      {tier:'Budget Pick', name:'Butler Creek Ultra Sling', price:'~$20', desc:'Simple, lightweight, and inexpensive — appropriate for a rifle that rarely weighs more than 6 lbs. No need to overspend here.', search:'Butler+Creek+Ultra+Sling'},
+      {tier:'Mid Range',   name:'Butler Creek Featherlight Foam Sling with Swivels', price:'~$40', desc:'Padded foam construction that\'s comfortable over a long, slow stalk through brush. Comes with swivels included, so it\'s ready to mount straight out of the box.', search:'Butler+Creek+Featherlight+Foam+Sling+Swivels'},
+      {tier:'Best Value',  name:'Magpul MS1 Padded Sling',     price:'~$80', desc:'Overkill for most small game outings, but if you\'re running the same rifle for predator calling sessions that involve more walking and waiting, the adjustability pays off.', search:'Magpul+MS1+padded+sling'},
+    ].forEach(function(s){
+      var c=el('a',{class:'inw-scope-card', href:'https://www.sportsmanswarehouse.com/search?q='+s.search, target:'_blank'});
+      c.innerHTML='<div class="tier">'+s.tier+'</div><h4>'+s.name+'</h4><div class="price">'+s.price+'</div><p>'+s.desc+'</p>';
+      sgStrapCards.appendChild(c);
+    });
+    sg.appendChild(sgStrapCards);
+
+    var sgStrapKnowLabel = el('p',{style:"font-family:'Work Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#172c1d;margin-bottom:12px"},'Know Your Sling');
+    sg.appendChild(sgStrapKnowLabel);
+    var sgStrapGrid = el('div',{class:'inw-glass-grid',style:'margin-bottom:8px'});
+    [
+      {title:'Quiet Hardware', body:'Metal swivels and buckles can click against the stock while still-hunting through brush, spooking squirrel and rabbit before you ever see them. Look for rubberized or coated hardware on a small game sling.'},
+      {title:'Quick Shoulder-to-Ready', body:'You often only get a second or two before small game bolts. A sling that lets you bring the rifle up fast without fumbling beats one built purely for comfort on a long carry.'},
+    ].forEach(function(g){
+      var c=el('div',{class:'inw-glass-card'});
+      c.innerHTML='<h4>'+g.title+'</h4><p>'+g.body+'</p>';
+      sgStrapGrid.appendChild(c);
+    });
+    sg.appendChild(sgStrapGrid);
 
 
     return wrap;
@@ -7668,6 +7945,108 @@ document.addEventListener('DOMContentLoaded', standardizeFooters);
     });
     // Draw trajectory graph
     drawTrajectory(key);
+  }
+
+  // ── SMALL GAME CALIBER SELECTION LOGIC ──────────────────────
+  // Bullet drop in inches at 25/50/75/100/125 yards (zeroed at 50yds)
+  var SG_TRAJ = {
+    '22lr':   [0.3, 0, -1.8, -5.6, -11.9],
+    '22mag':  [0.2, 0, -1.1, -3.4, -7.2],
+    '17hmr':  [0.1, 0, -0.7, -2.1, -4.6],
+    '223':    [0.1, 0, -0.4, -1.2, -2.6],
+    '22250':  [0.1, 0, -0.3, -0.9, -1.9],
+  };
+
+  function drawSgTrajectory(key) {
+    var graph = document.getElementById('sg-traj-graph');
+    if(!graph) return;
+    var drops = SG_TRAJ[key];
+    if(!drops) return;
+
+    var W = graph.offsetWidth || 400;
+    var H = 130;
+    var padL = 36, padR = 16, padT = 16, padB = 24;
+    var chartW = W - padL - padR;
+    var chartH = H - padT - padB;
+
+    var maxDrop = Math.max.apply(null, drops.map(Math.abs));
+    if(maxDrop === 0) maxDrop = 1;
+    var xStep = chartW / (drops.length - 1);
+
+    var pts = drops.map(function(d, i) {
+      var x = padL + i * xStep;
+      var y = padT + ((maxDrop - d) / (2 * maxDrop)) * chartH;
+      return [x, y];
+    });
+
+    var pathD = 'M ' + pts[0][0] + ' ' + pts[0][1];
+    for(var i = 1; i < pts.length; i++) {
+      var cpx = (pts[i-1][0] + pts[i][0]) / 2;
+      pathD += ' C ' + cpx + ' ' + pts[i-1][1] + ' ' + cpx + ' ' + pts[i][1] + ' ' + pts[i][0] + ' ' + pts[i][1];
+    }
+    var areaD = pathD + ' L ' + pts[pts.length-1][0] + ' ' + (padT + chartH) + ' L ' + pts[0][0] + ' ' + (padT + chartH) + ' Z';
+
+    var midY = padT + chartH/2;
+    var svg = '<svg width="100%" height="'+H+'" viewBox="0 0 '+W+' '+H+'" xmlns="http://www.w3.org/2000/svg">'
+      + '<line x1="'+padL+'" y1="'+padT+'" x2="'+(W-padR)+'" y2="'+padT+'" stroke="#e7e2d4" stroke-width="1"/>'
+      + '<line x1="'+padL+'" y1="'+midY+'" x2="'+(W-padR)+'" y2="'+midY+'" stroke="#e7e2d4" stroke-width="1" stroke-dasharray="4,3"/>'
+      + '<line x1="'+padL+'" y1="'+(padT+chartH)+'" x2="'+(W-padR)+'" y2="'+(padT+chartH)+'" stroke="#e7e2d4" stroke-width="1"/>'
+      + '<path d="'+areaD+'" fill="rgba(23,44,29,0.07)"/>'
+      + '<path d="'+pathD+'" fill="none" stroke="#172c1d" stroke-width="2.5" stroke-linecap="round"/>'
+      + pts.map(function(p, i) {
+          return '<circle cx="'+p[0]+'" cy="'+p[1]+'" r="4" fill="#172c1d"/>'
+            + '<text x="'+p[0]+'" y="'+(p[1]-8)+'" text-anchor="middle" font-family="Work Sans,sans-serif" font-size="10" fill="#944a00">'+drops[i]+'"</text>';
+        }).join('')
+      + '<text x="'+(padL-4)+'" y="'+(padT+4)+'" text-anchor="end" font-family="Work Sans,sans-serif" font-size="9" fill="#b0aba0">+'+maxDrop+'"</text>'
+      + '<text x="'+(padL-4)+'" y="'+(midY+4)+'" text-anchor="end" font-family="Work Sans,sans-serif" font-size="9" fill="#b0aba0">0"</text>'
+      + '<text x="'+(padL-4)+'" y="'+(padT+chartH+4)+'" text-anchor="end" font-family="Work Sans,sans-serif" font-size="9" fill="#b0aba0">-'+maxDrop+'"</text>'
+      + '<text x="'+padL+'" y="'+(padT-4)+'" font-family="Work Sans,sans-serif" font-size="9" fill="#2d6a4f">Zeroed at 50 yds</text>'
+      + '</svg>';
+
+    graph.innerHTML = svg;
+  }
+
+  function selectSgCaliber(key) {
+    var cal = SG_CALIBERS[key];
+    document.querySelectorAll('.sg-pill').forEach(function(p){
+      p.classList.toggle('active', p.dataset.cal === key);
+    });
+    document.querySelectorAll('#sg-animal-grid .inw-animal-card').forEach(function(card){
+      var id = card.dataset.animal;
+      var match = cal.animals.indexOf(id) !== -1;
+      card.className = 'inw-animal-card ' + (match ? 'active' : 'inactive');
+    });
+    var roundCard = document.getElementById('sg-round-card');
+    if(roundCard) {
+      roundCard.innerHTML = '<h3>'+cal.name+'</h3>'
+        + '<p class="tagline">'+cal.tagline+'</p>'
+        + '<div class="inw-round-row"><span class="lbl">Range</span><span class="val">'+cal.range+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Trajectory</span><span class="val">'+cal.trajectory+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Recoil</span><span class="val"><span class="inw-recoil-badge" style="background:'+cal.recoilColor+'">'+cal.recoil+'</span></span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Best Terrain</span><span class="val">'+cal.terrain+'</span></div>'
+        + '<div class="inw-round-row"><span class="lbl">Limitation</span><span class="val" style="color:#f5a788">'+cal.limitation+'</span></div>';
+    }
+    // Swap rifle list based on rifle type (rimfire vs predator)
+    var rifleList = document.getElementById('sg-rifle-list');
+    var rifleNote = document.getElementById('sg-rifle-note');
+    if(rifleList) {
+      rifleList.innerHTML = '';
+      var rifles = cal.rifleType === 'predator' ? SG_RIFLES_PREDATOR : SG_RIFLES_RIMFIRE;
+      var calName = cal.name.replace('.','').replace(' ','+') + '+';
+      rifles.forEach(function(r){
+        var card = el('a', {class:'inw-rifle-card', href:'https://www.sportsmanswarehouse.com/search?q='+calName+r.search, target:'_blank'});
+        card.innerHTML = '<h4 style="font-family:\'Newsreader\',Georgia,serif;font-size:16px;font-weight:700;color:#172c1d;margin-bottom:4px">'+r.name+'</h4>'
+          + '<p style="font-family:\'Work Sans\',sans-serif;font-size:12px;color:#737972;line-height:1.55;margin-bottom:6px">'+r.desc+'</p>'
+          + '<span style="font-family:\'Work Sans\',sans-serif;font-size:11px;font-weight:700;color:#944a00">'+r.price+'</span>';
+        rifleList.appendChild(card);
+      });
+    }
+    if(rifleNote) {
+      rifleNote.textContent = cal.rifleType === 'predator'
+        ? 'A mix of semi-auto and bolt-action options — all traditional-stocked with no AR-style features, legal to purchase in every state. Links open a current search at Sportsman\'s Warehouse — buy what\'s in stock.'
+        : 'A mix of semi-auto and bolt-action options available in your selected caliber at Sportsman\'s Warehouse. Links open a current search — buy what\'s in stock.';
+    }
+    drawSgTrajectory(key);
   }
 
   // ── INJECT INTO DOM ────────────────────────────────────────
