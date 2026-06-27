@@ -199,8 +199,6 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
 
 .hunt-map { width: 100%; background: #2a1a08; }
 .lpin { width: 20px; height: 20px; border-radius: 50%; border: 2.5px solid rgba(255,255,255,.85); box-shadow: 0 2px 8px rgba(0,0,0,.55); cursor: pointer; }
-.leaflet-container { background: #2a1a08 !important; }
-.leaflet-tile { filter: sepia(30%) brightness(.82) saturate(.75); }
 .leaflet-control-attribution { display: none; }
 .leaflet-control-zoom a { background: rgba(240,228,176,.92) !important; color: #8b6510 !important; border-color: #8b6510 !important; }
 .scroll-area { flex: 1; overflow-y: auto; padding: 10px 14px 20px; -webkit-overflow-scrolling: touch; }
@@ -2640,7 +2638,7 @@ a      { font-family: 'Libre Baskerville', Georgia, serif; }
     /* gear chips wrap */
     #screen-weapon div[style*="flex-wrap:wrap"] { max-width:100% !important; }
     /* Range map full width */
-    #screen-weapon #rangesMap { height:220px !important; }
+    /* Range map height is set inline (480px) — no override needed here */
     /* Range cards stack */
     #screen-weapon .fak-grid { grid-template-columns:1fr !important; }
   }
@@ -4160,7 +4158,7 @@ function showScreen(name){
       }
       if(!browseMap){
         browseMap=L.map('browseMapDiv',{zoomControl:true,attributionControl:false});
-        L.tileLayer(TILE_URL,TILE_OPTS).addTo(browseMap);
+        attachTileRetry(L.tileLayer(TILE_URL,TILE_OPTS).addTo(browseMap));
         browseMap.setView([47.4,-120.5],6);
       }
       browseMap.invalidateSize(true);
@@ -4287,6 +4285,22 @@ let nearMarkers=[], browseMarkers=[];
 
 const TILE_URL='https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
 const TILE_OPTS={attribution:'',className:'hunt-tiles',subdomains:'abcd',maxZoom:19};
+// Retry failed tile loads (common on mobile networks with spotty connections)
+function attachTileRetry(layer){
+  layer.on('tileerror', function(e){
+    var tile = e.tile;
+    if(!tile) return;
+    var retries = parseInt(tile.dataset.retries || '0', 10);
+    if(retries < 3){
+      tile.dataset.retries = retries + 1;
+      setTimeout(function(){
+        var src = tile.src;
+        tile.src = '';
+        tile.src = src;
+      }, 400 * (retries + 1));
+    }
+  });
+}
 
 function makeIcon(spot, isActive){
   const m = DIFF_META[spot.difficulty] || DIFF_META['Intermediate'];
@@ -4341,7 +4355,7 @@ let userDot=null;
 function initNearMap(){
   if(!nearMap){
     nearMap=L.map('nearMapDiv',{zoomControl:true,attributionControl:false});
-    L.tileLayer(TILE_URL,TILE_OPTS).addTo(nearMap);
+    attachTileRetry(L.tileLayer(TILE_URL,TILE_OPTS).addTo(nearMap));
   }
   // Always update the "you are here" dot (location may have changed between searches)
   if(userDot) userDot.remove();
@@ -4354,7 +4368,7 @@ function initNearMap(){
 function initBrowseMap(){
   if(browseMap) return;
   browseMap=L.map('browseMapDiv',{zoomControl:true,attributionControl:false});
-  L.tileLayer(TILE_URL,TILE_OPTS).addTo(browseMap);
+  attachTileRetry(L.tileLayer(TILE_URL,TILE_OPTS).addTo(browseMap));
   browseMap.setView([47.4,-120.5],6);
   renderBrowse();
 }
@@ -4942,7 +4956,7 @@ function setKywTab(t){
     btn.style.color      = t===id ? '#fff'    : '#434843';
     btn.style.boxShadow  = t===id ? '0 2px 8px rgba(6,27,14,.25)' : 'none';
   });
-  if(t === 'shoot') setTimeout(initRangesMap, 80);
+  if(t === 'shoot') initRangesMap();
 }
 
 function setKywSub(t) {
@@ -6399,26 +6413,43 @@ let rangesMap = null;
 let rangeMarkers = [];
 
 function initRangesMap() {
-  if (rangesMap) { rangesMap.invalidateSize(); return; }
-
-  const el = document.getElementById('rangesMapDiv');
-  if (!el) return;
-
-  // Poll until container has real dimensions
-  let tries = 0;
-  function tryInit() {
-    if (el.clientWidth > 0 && el.clientHeight > 0) {
+  let lastW = 0, lastH = 0, stableCount = 0;
+  function initRangesWhenReady(){
+    const el = document.getElementById('rangesMapDiv');
+    if(!el){ requestAnimationFrame(initRangesWhenReady); return; }
+    const w = el.clientWidth, h = el.clientHeight;
+    if(w === 0 || h === 0){
+      stableCount = 0;
+      requestAnimationFrame(initRangesWhenReady);
+      return;
+    }
+    if(w === lastW && h === lastH){
+      stableCount++;
+    } else {
+      stableCount = 0;
+      lastW = w; lastH = h;
+    }
+    if(stableCount < 2){
+      requestAnimationFrame(initRangesWhenReady);
+      return;
+    }
+    // Create the map exactly once. Never destroy/recreate it — Leaflet's
+    // remove()/L.map() cycle is unreliable on some mobile browsers and can
+    // leave panes in a corrupted state. Subsequent visits just resize it.
+    if (!rangesMap) {
       rangesMap = L.map('rangesMapDiv', {zoomControl:true, attributionControl:false});
-      L.tileLayer(TILE_URL, TILE_OPTS).addTo(rangesMap);
+      attachTileRetry(L.tileLayer(TILE_URL, TILE_OPTS).addTo(rangesMap));
       rangesMap.setView([47.2, -120.5], 6);
       plotRangeMarkers();
       buildRangeCards();
-    } else if (tries++ < 30) {
-      setTimeout(tryInit, 100);
     }
+    rangesMap.invalidateSize(true);
   }
-  tryInit();
+  requestAnimationFrame(initRangesWhenReady);
 }
+window.addEventListener('resize', function(){
+  if(rangesMap) rangesMap.invalidateSize(true);
+});
 
 function plotRangeMarkers() {
   rangeMarkers.forEach(m => m.remove());
